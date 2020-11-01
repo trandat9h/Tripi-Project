@@ -13,12 +13,12 @@ function TopHotel({ hotels }) {
         {hotels.map((hotel, index) => {
           return (
             <TouchableOpacity key={index} onPress={() => navigation.navigate('HotelDetail',{
-                hotel: hotels[index],
+                hotel: hotel,
             })} >
               <View style={styles.hotelWrapper}>
                 <Image
                   style={styles.image}
-                  source={require("../../assets/app-logo.png")}
+                  source={require("../../assets/hotel.jpg")}
                 />
                 <AntDesign
                   name="heart"
@@ -28,7 +28,7 @@ function TopHotel({ hotels }) {
                 />
                 <View style={styles.location}>
                   <Entypo name="location-pin" size={27} color="red" />
-                  <Text style={{ fontSize: 17, fontWeight: "700" }}>
+                  <Text style={{ fontSize: 17, fontWeight: "bold", color: "white" }}>
                     {" "}
                     {cities[index]}
                   </Text>
@@ -57,7 +57,6 @@ function TopHotel({ hotels }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "red",
     marginTop: 10,
   },
   hotelWrapper: {
@@ -68,7 +67,6 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200,
-    backgroundColor: "green",
     borderRadius: 20,
     marginBottom: 5,
   },
