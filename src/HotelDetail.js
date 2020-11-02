@@ -33,7 +33,7 @@ function HotelDetail({ route, navigation }) {
         <Entypo name="location" size={24} color="red" />
         <Text style={{ marginLeft: 4, fontSize: 17 }}> {hotel.location}</Text>
       </View>
-      <Entypo name="map" size={38} color="green" style={styles.mapIcon} onPress={() => navigation.navigate('SearchResult')} />
+      <Entypo name="map" size={38} color="green" style={styles.mapIcon} onPress={() => navigation.navigate('SearchResult',{hotels: [hotel, hotel, hotel, hotel, hotel ]})} />
       <ScrollView>
         <View style={styles.amenities}></View>
         <View>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   borderCover: {
-    height: 50,
+    height: 51, // tại sao 51 lại sai
     width: windowWidth,
     backgroundColor: "white",
     justifyContent: "flex-end",

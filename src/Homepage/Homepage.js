@@ -23,8 +23,8 @@ const marginTop = Constants.statusBarHeight;
 
 const hotel = [
   {
-    name: "hellodhaudwqudwqudhqwud",
-    location: "bla blo",
+    name: "hellodhdwdwđqqsdqdw",
+    location: "bla blịdiwdjiưudhưudwd",
     loveStatus: false,
     rating: 4,
     amenitites: [1, 1, 1, 0, 1],
@@ -33,6 +33,11 @@ const hotel = [
       require("../../assets/hotel.jpg"),
       require("../../assets/hotel.jpg"),
     ],
+    coordinate: {
+      latitude: 37.78825,
+      longitude: -122.4324,
+    },
+    price: 100,
     commentNumber: 5,
     likeNumber: 10,
     description:
@@ -50,6 +55,10 @@ const hotel = [
       require("../../assets/hotel.jpg"),
       require("../../assets/hotel.jpg"),
     ],
+    coordinate: {
+      latitude: 38.78825,
+      longitude: -120.4324,
+    },
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
   },
@@ -65,6 +74,10 @@ const hotel = [
       require("../../assets/hotel.jpg"),
       require("../../assets/hotel.jpg"),
     ],
+    coordinate: {
+      latitude: 36.78825,
+      longitude: -121.4324,
+    },
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
   },
@@ -111,6 +124,24 @@ const HomeScreen = () => {
     </View>
   );
 };
+
+Stack.navigationOptions = ({ navigation }) => {
+  let tabBarVisible;
+  if (navigation.state.routes.length > 1) {
+    navigation.state.routes.map(route => {
+      if (route.routeName === "HotelDetail") {
+        tabBarVisible = false;
+      } else {
+        tabBarVisible = true;
+      }
+    });
+  }
+
+  return {
+    tabBarVisible
+  };
+};
+
 function Homepage() {
   return (
     <Stack.Navigator

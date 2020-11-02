@@ -17,7 +17,13 @@ const routeIcons = {
   Notifications: "notification",
   Setting: "setting",
 };
-
+const getTabBarVisibility =(route) => {
+  const routeName = route.state ? route.state.routes[route.state.index].name : '';
+  if (routeName === 'HotelDetail' || routeName ==='SearchResult') {
+    return false;
+  }
+  return true;
+}
 export default function App() {
   return (
       <NavigationContainer>
@@ -30,7 +36,9 @@ export default function App() {
             />
           ),
         })}>
-          <Tab.Screen name="Homepage" component={Homepage} />
+          <Tab.Screen name="Homepage" component={Homepage} options={({ route }) => ({
+            tabBarVisible: getTabBarVisibility(route)
+          })} />
           <Tab.Screen name="History" component={History} />
           <Tab.Screen name="Notifications" component={Notifications} />
           <Tab.Screen name="Setting" component={Setting} />
@@ -39,9 +47,3 @@ export default function App() {
       
   );
 }
-/*
-const styles = StyleSheet.create({
-  container: {
-    marginTop: marginTop,
-  },
-}); */
