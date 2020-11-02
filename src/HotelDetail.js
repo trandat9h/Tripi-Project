@@ -8,6 +8,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from '@expo/vector-icons';
 const windowWidth = Dimensions.get("window").width;
 const marginTop = Constants.statusBarHeight;
+
 function HotelDetail({ route, navigation }) {
   const { hotel } = route.params;
   return (
@@ -32,7 +33,7 @@ function HotelDetail({ route, navigation }) {
         <Entypo name="location" size={24} color="red" />
         <Text style={{ marginLeft: 4, fontSize: 17 }}> {hotel.location}</Text>
       </View>
-      <Entypo name="map" size={38} color="green" style={styles.mapIcon} />
+      <Entypo name="map" size={38} color="green" style={styles.mapIcon} onPress={() => navigation.navigate('SearchResult')} />
       <ScrollView>
         <View style={styles.amenities}></View>
         <View>

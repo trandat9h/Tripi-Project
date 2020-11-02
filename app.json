@@ -21,6 +21,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "android": {
+      "package": "com.MapView",
+      "config": {
+        "googleMaps": { "apiKey": "AIzaSyCyWV-KXB0VoMD7oz1EqT6LeFrgXdieYQA" }   
+     }
     }
   }
 }

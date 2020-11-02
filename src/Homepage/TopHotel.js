@@ -29,7 +29,6 @@ function TopHotel({ hotels }) {
                 <View style={styles.location}>
                   <Entypo name="location-pin" size={27} color="red" />
                   <Text style={{ fontSize: 17, fontWeight: "bold", color: "white" }}>
-                    {" "}
                     {cities[index]}
                   </Text>
                 </View>
