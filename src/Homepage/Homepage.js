@@ -14,6 +14,7 @@ import TopHotel from "./TopHotel";
 import { createStackNavigator } from "@react-navigation/stack";
 import HotelDetail from "../HotelDetail";
 import SearchResult from "../Homepage/SearchResult";
+import BookingConfirmation from '../BookingConfirmation';
 const Stack = createStackNavigator();
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -49,6 +50,7 @@ const hotel = [
     loveStatus: false,
     rating: 4,
     commentNumber: 5,
+    price: 100,
     likeNumber: 10,
     images: [
       require("../../assets/hotel.jpg"),
@@ -69,6 +71,7 @@ const hotel = [
     rating: 4,
     commentNumber: 5,
     likeNumber: 10,
+    price: 100,
     images: [
       require("../../assets/hotel.jpg"),
       require("../../assets/hotel.jpg"),
@@ -124,12 +127,12 @@ const HomeScreen = () => {
     </View>
   );
 };
-
+/*
 Stack.navigationOptions = ({ navigation }) => {
   let tabBarVisible;
   if (navigation.state.routes.length > 1) {
     navigation.state.routes.map(route => {
-      if (route.routeName === "HotelDetail") {
+      if (route.routeName === "HotelDetail" || route.routeName === 'BookingConfirmation') {
         tabBarVisible = false;
       } else {
         tabBarVisible = true;
@@ -141,7 +144,7 @@ Stack.navigationOptions = ({ navigation }) => {
     tabBarVisible
   };
 };
-
+*/
 function Homepage() {
   return (
     <Stack.Navigator
@@ -151,6 +154,7 @@ function Homepage() {
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="HotelDetail" component={HotelDetail} />
       <Stack.Screen name="SearchResult" component={SearchResult} />
+      
     </Stack.Navigator>
   );
 }

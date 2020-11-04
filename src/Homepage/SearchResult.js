@@ -1,9 +1,18 @@
-import React, {createRef, useRef} from "react";
-import { StyleSheet, View, Image, Text, Dimensions } from "react-native";
+import React, { useRef, useCallback } from "react";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import Constants from "expo-constants";
 import MapView, { Callout, Marker } from "react-native-maps";
 import { Feather, Entypo, AntDesign } from "@expo/vector-icons";
 import Carousel from "react-native-snap-carousel";
+import { useNavigation } from "@react-navigation/native";
+
 const hotels = [
   {
     name: "hellodhdwdwđqqsdqdw",
@@ -71,41 +80,56 @@ const hotels = [
 const windowWidth = Dimensions.get("window").width;
 const marginTop = Constants.statusBarHeight;
 
-const renderCarouselItem = ({ item }) => {
-  return (
-    <View style={styles.carouselItem}>
-      <Image source={item.images[0]} style={styles.image} />
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <View style={{ flexDirection: "column", backgroundColor: "red" }}>
-          <Text style={styles.name}> {item.name}</Text>
-          <View style={{ flexDirection: "row", marginTop: 5, marginLeft: 10 }}>
-            <Entypo name="location" size={23} color="red" />
-            <Text style={styles.location}>{item.location}</Text>
-          </View>
-        </View>
-        <View style={{ flexDirection: "column", backgroundColor: "green" }}>
-          <Text style={styles.price}>{item.price}$</Text>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={styles.rating}>{item.rating}</Text>
-            <AntDesign name="star" size={24} color="yellow" />
-          </View>
-        </View>
-      </View>
-    </View>
-  );
-};
 function SearchResult({ navigation, route }) {
+
+  const renderCarouselItem = ({ item }) => {
+    //const navigation = useNavigation();
+    
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          if(route.params.previousHotelExist === false)
+          navigation.navigate("HotelDetail", { hotel: item });
+        }}
+      >
+        <View style={styles.carouselItem}>
+          <Image source={item.images[0]} style={styles.image} />
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <View style={{ flexDirection: "column" }}>
+              <Text style={styles.name}> {item.name}</Text>
+              <View
+                style={{ flexDirection: "row", marginTop: 5, marginLeft: 10 }}
+              >
+                <Entypo name="location" size={23} color="red" />
+                <Text style={styles.location}>{item.location}</Text>
+              </View>
+            </View>
+            <View style={{ flexDirection: "column", backgroundColor: "green" }}>
+              <Text style={styles.price}>{item.price}$</Text>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={styles.rating}>{item.rating}</Text>
+                <AntDesign name="star" size={24} color="yellow" />
+              </View>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   let mapRef = useRef();
   const onCarouselItemChange = (index) => {
     const location = hotels[index].coordinate;
     mapRef.current.animateToRegion({
       latitude: location.latitude,
       longitude: location.longitude,
-      longitudeDelta: 0.0922,
-      latitudeDelta: 0.0421,
-    }); 
-  }
- 
+      longitudeDelta: 0.0022,
+      latitudeDelta: 0.0021,
+    });
+  };
+
   //cons hotels = route.params.hotels;
   return (
     <View style={styles.container}>
@@ -117,8 +141,8 @@ function SearchResult({ navigation, route }) {
         initialRegion={{
           latitude: 37.78825,
           longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 0.0022,
+          longitudeDelta: 0.0021,
         }}
       >
         {hotels.map((hotel, index) => (

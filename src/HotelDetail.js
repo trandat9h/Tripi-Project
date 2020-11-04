@@ -1,18 +1,22 @@
 import React from "react";
-import { StyleSheet, View, Image, Text, Dimensions } from "react-native";
+import { StyleSheet, View, Image, Text, Dimensions, TouchableOpacity, ScrollView } from "react-native";
 import Constants from "expo-constants";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import { Feather } from '@expo/vector-icons';
+import { Feather } from "@expo/vector-icons";
+import HotelCard_v2 from './HotelCard_v2';
+
 const windowWidth = Dimensions.get("window").width;
 const marginTop = Constants.statusBarHeight;
 
 function HotelDetail({ route, navigation }) {
   const { hotel } = route.params;
+  const relevantHotels = [hotel, hotel, hotel];
   return (
     <View style={styles.container}>
+      <ScrollView>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -23,9 +27,19 @@ function HotelDetail({ route, navigation }) {
           return <Image source={image} style={styles.hotelImage} key={index} />;
         })}
       </ScrollView>
-      <Feather name="arrow-left-circle" size={35} color="black" style={{position: 'absolute', top: 20,left: 20,}} onPress={() => navigation.goBack()} />
-      <AntDesign name="hearto" size={35} color="red" style={{position: 'absolute',top: 20,
-    right: 20,}} />
+      <Feather
+        name="arrow-left-circle"
+        size={35}
+        color="black"
+        style={{ position: "absolute", top: 20, left: 20 }}
+        onPress={() => navigation.goBack()}
+      />
+      <AntDesign
+        name="hearto"
+        size={35}
+        color="red"
+        style={{ position: "absolute", top: 20, right: 20 }}
+      />
       <View style={styles.borderCover}>
         <Text style={styles.hotelName}>{hotel.name}</Text>
       </View>
@@ -33,8 +47,18 @@ function HotelDetail({ route, navigation }) {
         <Entypo name="location" size={24} color="red" />
         <Text style={{ marginLeft: 4, fontSize: 17 }}> {hotel.location}</Text>
       </View>
-      <Entypo name="map" size={38} color="green" style={styles.mapIcon} onPress={() => navigation.navigate('SearchResult',{hotels: [hotel, hotel, hotel, hotel, hotel ]})} />
-      <ScrollView>
+      <Entypo
+        name="map"
+        size={38}
+        color="green"
+        style={styles.mapIcon}
+        onPress={() =>
+          navigation.navigate("SearchResult", {
+            hotels: [hotel, hotel, hotel, hotel, hotel],
+            previousHotelExist: true,
+          })
+        }
+      />
         <View style={styles.amenities}></View>
         <View>
           <TouchableOpacity
@@ -56,13 +80,33 @@ function HotelDetail({ route, navigation }) {
             </View>
           </TouchableOpacity>
         </View>
-        <View  style={{marginVertical: 7,height: 2,width:windowWidth,backgroundColor: "grey"}}/>
+        <View
+          style={{
+            marginVertical: 7,
+            height: 2,
+            width: windowWidth,
+            backgroundColor: "grey",
+          }}
+        />
         <Text style={styles.topic}> Miêu tả</Text>
         <Text style={styles.description} numberOfLines={4}>
           {hotel.description}
         </Text>
-        <View  style={{marginVertical: 7,height: 2,width:windowWidth,backgroundColor: "grey"}}/>
+        <View
+          style={{
+            marginVertical: 7,
+            height: 2,
+            width: windowWidth,
+            backgroundColor: "grey",
+          }}
+        />
+        <Text style={styles.topic}>
+          Có thể bạn cũng muốn xem
+        </Text>
+        {relevantHotels.map((hotel, index) => {return(<HotelCard_v2 hotel={hotel} key={index}/>)})}
+        
       </ScrollView>
+      
     </View>
   );
 }
@@ -70,6 +114,7 @@ function HotelDetail({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     marginTop: marginTop,
+    flex: 1,
   },
   hotelImage: {
     width: windowWidth,
@@ -122,8 +167,19 @@ const styles = StyleSheet.create({
   topic: {
     marginLeft: 15,
     fontSize: 21,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
+  },
+  continueButton: {
+    position:'absolute',
+    bottom: 10,
+    left: windowWidth*1/12,
+    height: 60,
+    width: windowWidth*5/6,
+    alignItems:"center",
+    justifyContent:"center",
+    backgroundColor:"pink",
+    borderRadius: 30,
   }
 });
 
