@@ -6,15 +6,20 @@ import {
   Text,
   Dimensions,
   Image,
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import Constants from "expo-constants";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
 import TopHotel from "./TopHotel";
 import { createStackNavigator } from "@react-navigation/stack";
 import HotelDetail from "../HotelDetail";
 import SearchResult from "../Homepage/SearchResult";
 import BookingConfirmation from '../BookingConfirmation';
+import HotelSearchBar from "../HotelSearchBar";
+import HotelByCities from "../HotelByCities";
+import TopRating from "../TopRating";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 const Stack = createStackNavigator();
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -87,8 +92,9 @@ const hotel = [
 ];
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View>
         <ImageBackground
           source={require("../../assets/app-background.jpg")}
@@ -109,7 +115,7 @@ const HomeScreen = () => {
           >
             Find your hotel
           </Text>
-          <TouchableOpacity style={{ alignItems: "center", marginTop: 40 }}>
+          <TouchableOpacity style={{ alignItems: "center", marginTop: 40 }} onPress={() => {navigation.navigate('HotelSearchBar',{hotel: hotel[0]})}}>
             <View style={styles.searchBar}>
               <AntDesign name="search1" size={24} color="black" />
               <Text> Tìm vị trí, khách sạn...</Text>
@@ -117,34 +123,22 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </ImageBackground>
       </View>
-      <ScrollView>
         <View>
           <Text style={styles.topic}>Được đề xuất cho bạn</Text>
           <Text style={styles.subTopic}> Top khách sạn hàng đầu Việt Nam</Text>
           <TopHotel hotels={hotel} />
         </View>
-      </ScrollView>
-    </View>
+        <View>
+        <Text style={styles.topic}>Thành phố du lịch</Text>
+        <Text style={styles.subTopic}> 1 câu gì đó thật ngầu</Text>
+        <HotelByCities />
+        <Text style={styles.topic}>1 cái gì đó ngầu ko kém</Text>
+        <Text style={styles.subTopic}> 1 câu làm câu trên ngầu hơn</Text>
+        <TopRating hotels={hotel} />
+        </View>
+    </ScrollView>
   );
-};
-/*
-Stack.navigationOptions = ({ navigation }) => {
-  let tabBarVisible;
-  if (navigation.state.routes.length > 1) {
-    navigation.state.routes.map(route => {
-      if (route.routeName === "HotelDetail" || route.routeName === 'BookingConfirmation') {
-        tabBarVisible = false;
-      } else {
-        tabBarVisible = true;
-      }
-    });
-  }
-
-  return {
-    tabBarVisible
-  };
-};
-*/
+}; 
 function Homepage() {
   return (
     <Stack.Navigator
@@ -154,6 +148,8 @@ function Homepage() {
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="HotelDetail" component={HotelDetail} />
       <Stack.Screen name="SearchResult" component={SearchResult} />
+      <Stack.Screen name="BookingConfirmation" component={BookingConfirmation} />
+      <Stack.Screen name="HotelSearchBar" component={HotelSearchBar} />
       
     </Stack.Navigator>
   );
@@ -184,13 +180,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   topic: {
-    fontSize: 25,
+    fontSize: 22,
     fontWeight: "bold",
     marginLeft: 20,
     marginTop: 10,
   },
   subTopic: {
-    fontSize: 19,
+    fontSize: 17,
     fontWeight: "600",
     marginLeft: 20,
     marginTop: 10,

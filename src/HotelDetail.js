@@ -27,25 +27,22 @@ function HotelDetail({ route, navigation }) {
           return <Image source={image} style={styles.hotelImage} key={index} />;
         })}
       </ScrollView>
-      <Feather
-        name="arrow-left-circle"
-        size={35}
-        color="black"
-        style={{ position: "absolute", top: 20, left: 20 }}
-        onPress={() => navigation.goBack()}
-      />
+      <TouchableOpacity  onPress={() => navigation.goBack()} style={{alignItems:'center',justifyContent:'center', position: "absolute", top: 20, left: 20, backgroundColor:'#f9f9f9', height: 36,width: 36, borderRadius: 18, }} >
+      <AntDesign name="arrowleft" size={26} color="black" />
+      </TouchableOpacity>
+      <TouchableOpacity  style={{ position: "absolute", top: 20, right: 20, alignItems:'center',justifyContent:'center',height: 36, width: 36, borderRadius: 18,backgroundColor:'#f9f9f9'}}>
       <AntDesign
         name="hearto"
-        size={35}
+        size={26}
         color="red"
-        style={{ position: "absolute", top: 20, right: 20 }}
       />
+      </TouchableOpacity>
       <View style={styles.borderCover}>
         <Text style={styles.hotelName}>{hotel.name}</Text>
       </View>
       <View style={{ flexDirection: "row", marginLeft: 20 }}>
-        <Entypo name="location" size={24} color="red" />
-        <Text style={{ marginLeft: 4, fontSize: 17 }}> {hotel.location}</Text>
+        <Entypo name="location" size={19} color="red" />
+        <Text style={{ marginLeft: 4, fontSize: 16 }}> {hotel.location}</Text>
       </View>
       <Entypo
         name="map"
@@ -106,7 +103,11 @@ function HotelDetail({ route, navigation }) {
         {relevantHotels.map((hotel, index) => {return(<HotelCard_v2 hotel={hotel} key={index}/>)})}
         
       </ScrollView>
-      
+      <TouchableOpacity style={styles.continueButton} onPress={() => {
+        navigation.navigate('BookingConfirmation',{hotel: hotel})
+      }}>
+            <Text style={{fontWeight: 'bold',fontSize: 20,}} >{hotel.price}$/day</Text>
+          </TouchableOpacity>
     </View>
   );
 }
@@ -115,6 +116,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: marginTop,
     flex: 1,
+    backgroundColor:"#f9f9f9"
   },
   hotelImage: {
     width: windowWidth,
@@ -122,14 +124,14 @@ const styles = StyleSheet.create({
   },
   hotelName: {
     fontWeight: "bold",
-    fontSize: 23,
+    fontSize: 21,
     marginLeft: 20,
     marginBottom: 5,
   },
   borderCover: {
     height: 51, // tại sao 51 lại sai
     width: windowWidth,
-    backgroundColor: "white",
+    backgroundColor: "#f9f9f9",
     justifyContent: "flex-end",
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
@@ -162,11 +164,11 @@ const styles = StyleSheet.create({
   },
   description: {
     marginHorizontal: 20,
-    fontSize: 15,
+    fontSize: 16,
   },
   topic: {
     marginLeft: 15,
-    fontSize: 21,
+    fontSize: 18,
     fontWeight: "bold",
     marginBottom: 5,
   },
@@ -178,7 +180,7 @@ const styles = StyleSheet.create({
     width: windowWidth*5/6,
     alignItems:"center",
     justifyContent:"center",
-    backgroundColor:"pink",
+    backgroundColor:"#D67B60",
     borderRadius: 30,
   }
 });

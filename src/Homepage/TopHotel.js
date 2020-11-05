@@ -28,7 +28,7 @@ function TopHotel({ hotels }) {
                 />
                 <View style={styles.location}>
                   <Entypo name="location-pin" size={27} color="red" />
-                  <Text style={{ fontSize: 17, fontWeight: "bold", color: "white" }}>
+                  <Text style={{ fontSize: 16, fontWeight: '600',color:"black", marginRight: 7 }}>
                     {cities[index]}
                   </Text>
                 </View>
@@ -59,9 +59,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   hotelWrapper: {
+    padding: 10,
+    height: 300,
+    backgroundColor:"red",
     flexDirection: "column",
     marginLeft: 20,
-    width: 200,
+    width: 220,
   },
   image: {
     width: 200,
@@ -80,9 +83,13 @@ const styles = StyleSheet.create({
     left: 160,
   },
   location: {
+    backgroundColor: "white",
     position: "absolute",
     flexDirection: "row",
-    top: 170,
+    top: 181,
+    left: 10,
+    borderTopRightRadius:20,
+    borderBottomLeftRadius: 20,
   },
 });
 
