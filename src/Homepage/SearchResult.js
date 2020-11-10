@@ -12,6 +12,8 @@ import MapView, { Callout, Marker } from "react-native-maps";
 import { Feather, Entypo, AntDesign } from "@expo/vector-icons";
 import Carousel from "react-native-snap-carousel";
 import { useNavigation } from "@react-navigation/native";
+import { Roboto_400Regular_Italic, useFonts } from "@expo-google-fonts/roboto";
+import { AppLoading } from "expo";
 
 const hotels = [
   {
@@ -131,6 +133,10 @@ function SearchResult({ navigation, route }) {
   };
 
   //cons hotels = route.params.hotels;
+  let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic });
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
   return (
     <View style={styles.container}>
       <MapView
@@ -176,7 +182,7 @@ function SearchResult({ navigation, route }) {
         onPress={() => navigation.goBack()}
       />
     </View>
-  );
+  )}
 }
 
 const styles = StyleSheet.create({

@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
+import { Roboto_400Regular_Italic, useFonts } from "@expo-google-fonts/roboto";
+import { AppLoading } from "expo";
 
 const marginTop = Constants.statusBarHeight;
 const cities = [
@@ -18,6 +20,10 @@ const cities = [
 ];
 function HotelByCities() {
   const navigation = useNavigation();
+  let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic });
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
   return (
     <View style={styles.container}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -33,13 +39,13 @@ function HotelByCities() {
         })}
       </ScrollView>
     </View>
-  );
+  )}
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: marginTop,
+    marginTop: 10,
   },
   image: {
     width: 200,
@@ -52,9 +58,10 @@ const styles = StyleSheet.create({
   name: {
     position: "absolute",
     bottom: 5,
-    fontSize: 20,
+    fontSize: 25,
     color: "white",
     fontWeight: "bold",
+    marginLeft: 10,
   },
 });
 

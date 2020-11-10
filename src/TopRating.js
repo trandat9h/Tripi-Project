@@ -9,8 +9,15 @@ import {
 } from "react-native";
 import Constants from "expo-constants";
 import HotelCard from "./HotelCard";
+import { Roboto_400Regular_Italic, useFonts } from "@expo-google-fonts/roboto";
+import { AppLoading } from "expo";
+
 const marginTop = Constants.statusBarHeight;
 function TopRating({ hotels }) {
+  let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic });
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
   return (
     <View style={styles.container}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -23,7 +30,7 @@ function TopRating({ hotels }) {
         })}
       </ScrollView>
     </View>
-  );
+  )}
 }
 
 const styles = StyleSheet.create({

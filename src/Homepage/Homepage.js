@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -15,11 +15,14 @@ import TopHotel from "./TopHotel";
 import { createStackNavigator } from "@react-navigation/stack";
 import HotelDetail from "../HotelDetail";
 import SearchResult from "../Homepage/SearchResult";
-import BookingConfirmation from '../BookingConfirmation';
+import BookingConfirmation from "../BookingConfirmation";
 import HotelSearchBar from "../HotelSearchBar";
 import HotelByCities from "../HotelByCities";
 import TopRating from "../TopRating";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { Roboto_400Regular_Italic, useFonts, Roboto_500Medium_Italic } from "@expo-google-fonts/roboto";
+import { AppLoading } from "expo";
+import axios from "axios";
 const Stack = createStackNavigator();
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -43,7 +46,7 @@ const hotel = [
       latitude: 37.78825,
       longitude: -122.4324,
     },
-    price: 100,
+    price: 10000000,
     commentNumber: 5,
     likeNumber: 10,
     description:
@@ -55,7 +58,7 @@ const hotel = [
     loveStatus: false,
     rating: 4,
     commentNumber: 5,
-    price: 100,
+    price: 10000000,
     likeNumber: 10,
     images: [
       require("../../assets/hotel.jpg"),
@@ -93,52 +96,72 @@ const hotel = [
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  return (
-    <ScrollView style={styles.container}>
-      <View>
-        <ImageBackground
-          source={require("../../assets/app-background.jpg")}
-          style={styles.backgroundImage}
-        >
-          <Image
-            source={require("../../assets/app-logo.png")}
-            style={styles.logo}
-            resizeMode="contain"
-          />
-          <Text
-            style={{
-              marginLeft: 20,
-              fontSize: 20,
-              color: "white",
-              marginTop: 5,
-            }}
+  const [hotels, setHotel] = useState([]);
+  const getHotel = () => {
+    axios
+      .get(`http://127.0.0.1:5000/homepage`)
+      .then(res => console.log(res))
+      .catch(error => console.log(error));
+  };
+  useEffect(() => {
+    getHotel();
+  }, []);
+  let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic, Roboto_500Medium_Italic});
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <ScrollView style={styles.container}>
+        <View>
+          <ImageBackground
+            source={require("../../assets/app-background.jpg")}
+            style={styles.backgroundImage}
           >
-            Find your hotel
-          </Text>
-          <TouchableOpacity style={{ alignItems: "center", marginTop: 40 }} onPress={() => {navigation.navigate('HotelSearchBar',{hotel: hotel[0]})}}>
-            <View style={styles.searchBar}>
-              <AntDesign name="search1" size={24} color="black" />
-              <Text> Tìm vị trí, khách sạn...</Text>
-            </View>
-          </TouchableOpacity>
-        </ImageBackground>
-      </View>
+            <Image
+              source={require("../../assets/Logo.png")}
+              style={styles.logo}
+              resizeMode="contain"
+            />
+            <Text
+              style={{
+                marginLeft: 20,
+                fontSize: 20,
+                color: "white",
+                marginTop: 5,
+                fontFamily: 'Roboto_500Medium_Italic',
+              }}
+            >
+              Bạn muốn đi đâu?
+            </Text>
+            <TouchableOpacity
+              style={{ alignItems: "center", marginTop: 40 }}
+              onPress={() => {
+                navigation.navigate("HotelSearchBar", { hotel: hotel[0] });
+              }}
+            >
+              <View style={styles.searchBar}>
+                <AntDesign name="search1" size={24} color="black" />
+                <Text style={{opacity:0.6}}> Tìm vị trí, khách sạn...</Text>
+              </View>
+            </TouchableOpacity>
+          </ImageBackground>
+        </View>
         <View>
           <Text style={styles.topic}>Được đề xuất cho bạn</Text>
           <Text style={styles.subTopic}> Top khách sạn hàng đầu Việt Nam</Text>
           <TopHotel hotels={hotel} />
         </View>
         <View>
-        <Text style={styles.topic}>Thành phố du lịch</Text>
-        <Text style={styles.subTopic}> 1 câu gì đó thật ngầu</Text>
-        <HotelByCities />
-        <Text style={styles.topic}>1 cái gì đó ngầu ko kém</Text>
-        <Text style={styles.subTopic}> 1 câu làm câu trên ngầu hơn</Text>
-        <TopRating hotels={hotel} />
+          <Text style={styles.topic}>Mùa đông này mình đi đâu?</Text>
+          <HotelByCities />
+          <Text style={styles.topic}>1 cái gì đó ngầu ko kém</Text>
+          <Text style={styles.subTopic}> 1 câu làm câu trên ngầu hơn</Text>
+          <TopRating hotels={hotel} />
         </View>
-    </ScrollView>
-  );
-}; 
+      </ScrollView>
+    );
+  }
+};
 function Homepage() {
   return (
     <Stack.Navigator
@@ -148,9 +171,11 @@ function Homepage() {
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="HotelDetail" component={HotelDetail} />
       <Stack.Screen name="SearchResult" component={SearchResult} />
-      <Stack.Screen name="BookingConfirmation" component={BookingConfirmation} />
+      <Stack.Screen
+        name="BookingConfirmation"
+        component={BookingConfirmation}
+      />
       <Stack.Screen name="HotelSearchBar" component={HotelSearchBar} />
-      
     </Stack.Navigator>
   );
 }
@@ -159,6 +184,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: marginTop,
+    backgroundColor: '#EFEFEF',
   },
   backgroundImage: {
     width: windowWidth,
@@ -173,13 +199,14 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: "row",
     justifyContent: "center",
-    backgroundColor: "white",
+    backgroundColor: "#f9f9f9",
     width: 350,
     height: 40,
     alignItems: "center",
     borderRadius: 20,
   },
   topic: {
+    fontFamily: "Roboto_400Regular_Italic",
     fontSize: 22,
     fontWeight: "bold",
     marginLeft: 20,

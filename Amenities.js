@@ -1,13 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Image, Text} from 'react-native';
+import { StyleSheet, View, Image, Text, Amenities} from 'react-native';
 import Constants from 'expo-constants';
-import { Roboto_400Regular_Italic, useFonts } from "@expo-google-fonts/roboto";
-import { AppLoading } from "expo";
 const marginTop = Constants.statusBarHeight;
-function HotelSearchBar() {
+function Amenities() {
     return (
         <View style={styles.container}>
-           <Text> Noti</Text>
+           <Text> Amen</Text>
 
         </View>
     )
@@ -18,7 +16,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: marginTop,
     },
-
+   
 })
 
-export default HotelSearchBar;
+export default Amenities;

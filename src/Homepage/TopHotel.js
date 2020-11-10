@@ -4,9 +4,17 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { Roboto_400Regular_Italic, useFonts } from "@expo-google-fonts/roboto";
+import { AppLoading } from "expo";
+import { Foundation } from '@expo/vector-icons';
+
 const cities = ["Hà Nội", "Đà Nẵng", "TP.HCM"];
-function TopHotel({ hotels }) {
+const TopHotel = ({ hotels }) => {
   const navigation = useNavigation();
+  let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic });
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
   return (
     <View style={styles.container}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -20,15 +28,10 @@ function TopHotel({ hotels }) {
                   style={styles.image}
                   source={require("../../assets/hotel.jpg")}
                 />
-                <AntDesign
-                  name="heart"
-                  size={27}
-                  color="red"
-                  style={styles.like}
-                />
+                <Entypo name="heart-outlined" size={35} color="#FE0000" style={styles.like} />
                 <View style={styles.location}>
                   <Entypo name="location-pin" size={27} color="red" />
-                  <Text style={{ fontSize: 16, fontWeight: '600',color:"black", marginRight: 7 }}>
+                  <Text style={{ fontSize: 18, fontWeight: '600',color:"white", marginRight: 7 }}>
                     {cities[index]}
                   </Text>
                 </View>
@@ -40,8 +43,8 @@ function TopHotel({ hotels }) {
                 >
                   <Text style={styles.hotelText}>{hotel.name}</Text>
                   <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.hotelText}>{hotel.rating}</Text>
-                    <AntDesign name="star" size={24} color="yellow" />
+                    <Text style={styles.rating}>{hotel.rating}</Text>
+                    <Foundation name="star" size={26} color="#EFCE4A" style={{marginRight: 8}} />
                   </View>
                 </View>
               </View>
@@ -50,7 +53,7 @@ function TopHotel({ hotels }) {
         })}
       </ScrollView>
     </View>
-  );
+  )}
 }
 
 const styles = StyleSheet.create({
@@ -59,38 +62,47 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   hotelWrapper: {
-    padding: 10,
-    height: 300,
-    backgroundColor:"red",
+    height: 320,
+    backgroundColor:"#FFFFFF",
     flexDirection: "column",
     marginLeft: 20,
-    width: 220,
+    width: 230,
+    borderRadius: 20,   
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 230,
+    height: 245,
     borderRadius: 20,
     marginBottom: 5,
   },
   hotelText: {
-    fontSize: 20,
+    fontSize: 19,
     flexShrink: 1,
     marginRight: 5,
+    marginLeft: 10,
   },
   like: {
     position: "absolute",
-    top: 10,
-    left: 160,
+    top: 13,
+    left: 180,
   },
   location: {
-    backgroundColor: "white",
+    backgroundColor: "grey",
     position: "absolute",
     flexDirection: "row",
-    top: 181,
-    left: 10,
+    top: 213,
     borderTopRightRadius:20,
     borderBottomLeftRadius: 20,
+    opacity: 0.8,
+    paddingTop: 3,
+    paddingRight: 5,
   },
+  rating: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginRight: 4,
+
+  }
 });
 
 export default TopHotel;

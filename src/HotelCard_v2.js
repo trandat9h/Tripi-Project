@@ -1,8 +1,14 @@
 import React from 'react';
 import { StyleSheet, View, Image, Text} from 'react-native';
 import { Entypo, AntDesign} from '@expo/vector-icons';
+import { Roboto_400Regular_Italic, useFonts } from "@expo-google-fonts/roboto";
+import { AppLoading } from "expo";
 
 function HotelCard_v2({hotel}) {
+    let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic });
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
     return (
         <View style={styles.container}>
            <Image style={styles.image} source={require('../assets/hotel.jpg')} />
@@ -23,7 +29,7 @@ function HotelCard_v2({hotel}) {
            </View>
 
         </View>
-    )
+    )}
 }
 
 const styles = StyleSheet.create({
