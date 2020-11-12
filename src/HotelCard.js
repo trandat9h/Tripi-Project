@@ -23,7 +23,7 @@ function HotelCard({hotel}) {
         }}
       >
         <View style={styles.cardWrapper}>
-          <Image source={hotel.images[0]} style={styles.image} />
+          <Image source={{uri:hotel.images[0]}} style={styles.image} />
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
@@ -63,14 +63,14 @@ const styles = StyleSheet.create({
       width: 350,
       borderRadius: 20,
       shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 3,
-      },
-      shadowOpacity: 0.27,
-      shadowRadius: 4.65,
-      
-      elevation: 6,
+shadowOffset: {
+	width: 0,
+	height: 5,
+},
+shadowOpacity: 0.36,
+shadowRadius: 6.68,
+
+elevation: 11,
     },
     image: {
       width: 350,

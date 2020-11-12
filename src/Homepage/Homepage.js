@@ -20,7 +20,11 @@ import HotelSearchBar from "../HotelSearchBar";
 import HotelByCities from "../HotelByCities";
 import TopRating from "../TopRating";
 import { useNavigation } from "@react-navigation/native";
-import { Roboto_400Regular_Italic, useFonts, Roboto_500Medium_Italic } from "@expo-google-fonts/roboto";
+import {
+  Roboto_400Regular_Italic,
+  useFonts,
+  Roboto_500Medium_Italic,
+} from "@expo-google-fonts/roboto";
 import { AppLoading } from "expo";
 import axios from "axios";
 const Stack = createStackNavigator();
@@ -28,86 +32,26 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const marginTop = Constants.statusBarHeight;
 
-//Test Data
-
-const hotel = [
-  {
-    name: "hellodhdwdwđqqsdqdw",
-    location: "bla blịdiwdjiưudhưudwd",
-    loveStatus: false,
-    rating: 4,
-    amenitites: [1, 1, 1, 0, 1],
-    images: [
-      require("../../assets/hotel.jpg"),
-      require("../../assets/hotel.jpg"),
-      require("../../assets/hotel.jpg"),
-    ],
-    coordinate: {
-      latitude: 37.78825,
-      longitude: -122.4324,
-    },
-    price: 10000000,
-    commentNumber: 5,
-    likeNumber: 10,
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  },
-  {
-    name: "hello",
-    location: "bla blo",
-    loveStatus: false,
-    rating: 4,
-    commentNumber: 5,
-    price: 10000000,
-    likeNumber: 10,
-    images: [
-      require("../../assets/hotel.jpg"),
-      require("../../assets/hotel.jpg"),
-      require("../../assets/hotel.jpg"),
-    ],
-    coordinate: {
-      latitude: 38.78825,
-      longitude: -120.4324,
-    },
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  },
-  {
-    name: "hello",
-    location: "bla blo",
-    loveStatus: false,
-    rating: 4,
-    commentNumber: 5,
-    likeNumber: 10,
-    price: 100,
-    images: [
-      require("../../assets/hotel.jpg"),
-      require("../../assets/hotel.jpg"),
-      require("../../assets/hotel.jpg"),
-    ],
-    coordinate: {
-      latitude: 36.78825,
-      longitude: -121.4324,
-    },
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  },
-];
-
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const [hotels, setHotel] = useState([]);
+  const [hotel, setHotel] = useState([]);
+  const [loading, setLoading] = useState(true);
   const getHotel = () => {
     axios
-      .get(`http://127.0.0.1:5000/homepage`)
-      .then(res => console.log(res))
-      .catch(error => console.log(error));
+      .get("https://dae6df8179b6.ngrok.io/homepage")
+      .then((res) => {
+        setHotel(res.data), setLoading(false);
+      })
+      .catch((error) => console.log(error));
   };
   useEffect(() => {
     getHotel();
   }, []);
-  let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic, Roboto_500Medium_Italic});
-  if (!fontsLoaded) {
+  let [fontsLoaded] = useFonts({
+    Roboto_400Regular_Italic,
+    Roboto_500Medium_Italic,
+  });
+  if (!fontsLoaded || loading === true) {
     return <AppLoading />;
   } else {
     return (
@@ -128,7 +72,7 @@ const HomeScreen = () => {
                 fontSize: 20,
                 color: "white",
                 marginTop: 5,
-                fontFamily: 'Roboto_500Medium_Italic',
+                fontFamily: "Roboto_500Medium_Italic",
               }}
             >
               Bạn muốn đi đâu?
@@ -141,7 +85,7 @@ const HomeScreen = () => {
             >
               <View style={styles.searchBar}>
                 <AntDesign name="search1" size={24} color="black" />
-                <Text style={{opacity:0.6}}> Tìm vị trí, khách sạn...</Text>
+                <Text style={{ opacity: 0.6 }}> Tìm vị trí, khách sạn...</Text>
               </View>
             </TouchableOpacity>
           </ImageBackground>
@@ -153,7 +97,7 @@ const HomeScreen = () => {
         </View>
         <View>
           <Text style={styles.topic}>Mùa đông này mình đi đâu?</Text>
-          <HotelByCities />
+          <HotelByCities  hotels={hotel}/>
           <Text style={styles.topic}>1 cái gì đó ngầu ko kém</Text>
           <Text style={styles.subTopic}> 1 câu làm câu trên ngầu hơn</Text>
           <TopRating hotels={hotel} />
@@ -184,7 +128,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: marginTop,
-    backgroundColor: '#EFEFEF',
+    backgroundColor: "#EFEFEF",
   },
   backgroundImage: {
     width: windowWidth,

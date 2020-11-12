@@ -18,7 +18,7 @@ const cities = [
   { name: "ĐÀ NẴNG", image: require("../assets/hotel.jpg") },
   { name: "ĐÀ LẠT", image: require("../assets/hotel.jpg") },
 ];
-function HotelByCities() {
+function HotelByCities({hotels}) {
   const navigation = useNavigation();
   let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic });
   if (!fontsLoaded) {
@@ -29,7 +29,7 @@ function HotelByCities() {
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {cities.map((city, index) => {
           return (
-            <TouchableOpacity key={index} onPress={() => navigation.navigate('SearchResult', {previousHotelExist: false})}>
+            <TouchableOpacity key={index} onPress={() => navigation.navigate('SearchResult', {previousHotelExist: false, hotels: hotels})}>
               <View style={styles.cardWrapper} >
                 <Image source={city.image} style={styles.image} />
                 <Text style={styles.name}> {city.name}</Text>

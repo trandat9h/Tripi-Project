@@ -15,74 +15,13 @@ import { useNavigation } from "@react-navigation/native";
 import { Roboto_400Regular_Italic, useFonts } from "@expo-google-fonts/roboto";
 import { AppLoading } from "expo";
 
-const hotels = [
-  {
-    name: "hellodhdwdwđqqsdqdw",
-    location: "bla blịdiwdjiưudhưudwd",
-    loveStatus: false,
-    rating: 4,
-    amenitites: [1, 1, 1, 0, 1],
-    images: [
-      require("../../assets/hotel.jpg"),
-      require("../../assets/hotel.jpg"),
-      require("../../assets/hotel.jpg"),
-    ],
-    coordinate: {
-      latitude: 38.78929,
-      longitude: -122.4324,
-    },
-    price: 100,
-    commentNumber: 5,
-    likeNumber: 10,
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  },
-  {
-    name: "hello",
-    location: "bla blo",
-    loveStatus: false,
-    rating: 4,
-    price: 140,
-    commentNumber: 5,
-    likeNumber: 10,
-    images: [
-      require("../../assets/hotel.jpg"),
-      require("../../assets/hotel.jpg"),
-      require("../../assets/hotel.jpg"),
-    ],
-    coordinate: {
-      latitude: 38.78836,
-      longitude: -122.4324,
-    },
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  },
-  {
-    name: "hello",
-    location: "bla blo",
-    loveStatus: false,
-    rating: 4,
-    commentNumber: 5,
-    price: 300,
-    likeNumber: 10,
-    images: [
-      require("../../assets/hotel.jpg"),
-      require("../../assets/hotel.jpg"),
-      require("../../assets/hotel.jpg"),
-    ],
-    coordinate: {
-      latitude: 38.79225,
-      longitude: -122.4324,
-    },
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  },
-];
+
 
 const windowWidth = Dimensions.get("window").width;
 const marginTop = Constants.statusBarHeight;
 
 function SearchResult({ navigation, route }) {
+  const hotels = route.params.hotels;
 
   const renderCarouselItem = ({ item }) => {
     //const navigation = useNavigation();
@@ -95,7 +34,7 @@ function SearchResult({ navigation, route }) {
         }}
       >
         <View style={styles.carouselItem}>
-          <Image source={item.images[0]} style={styles.image} />
+          <Image source={{uri:item.images[0]}} style={styles.image} />
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
@@ -108,7 +47,7 @@ function SearchResult({ navigation, route }) {
                 <Text style={styles.location}>{item.location}</Text>
               </View>
             </View>
-            <View style={{ flexDirection: "column", backgroundColor: "green" }}>
+            <View style={{ flexDirection: "column" }}>
               <Text style={styles.price}>{item.price}$</Text>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text style={styles.rating}>{item.rating}</Text>
@@ -122,17 +61,18 @@ function SearchResult({ navigation, route }) {
   };
 
   let mapRef = useRef();
+  let markers = useRef([]);
   const onCarouselItemChange = (index) => {
     const location = hotels[index].coordinate;
     mapRef.current.animateToRegion({
       latitude: location.latitude,
       longitude: location.longitude,
-      longitudeDelta: 0.0022,
-      latitudeDelta: 0.0021,
+      longitudeDelta: 0.1022,
+      latitudeDelta: 0.1021,
     });
+   markers.current[index].showCallout();
   };
 
-  //cons hotels = route.params.hotels;
   let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic });
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -147,21 +87,24 @@ function SearchResult({ navigation, route }) {
         initialRegion={{
           latitude: 37.78825,
           longitude: -122.4324,
-          latitudeDelta: 0.0022,
-          longitudeDelta: 0.0021,
+          latitudeDelta: 0.1122,
+          longitudeDelta: 0.1121,
         }}
       >
         {hotels.map((hotel, index) => (
           <Marker
+           ref = {el => markers.current[index] = el}
             key={index}
             coordinate={{
               latitude: hotel.coordinate.latitude,
               longitude: hotel.coordinate.longitude,
             }}
           >
-            <View style={styles.marker}>
-              <Text>{hotel.price}$</Text>
-            </View>
+            <Callout>
+              <Text>
+                {hotel.price} VND
+              </Text>
+            </Callout>
           </Marker>
         ))}
       </MapView>

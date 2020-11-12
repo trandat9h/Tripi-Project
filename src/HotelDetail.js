@@ -14,10 +14,11 @@ import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
+
 import HotelCard_v2 from "./HotelCard_v2";
 import { Roboto_400Regular_Italic, useFonts } from "@expo-google-fonts/roboto";
 import { AppLoading } from "expo";
+import Amenities from "../Amenities";
 
 const windowWidth = Dimensions.get("window").width;
 const marginTop = Constants.statusBarHeight;
@@ -40,7 +41,7 @@ const HotelDetail = ({ route, navigation }) => {
           >
             {hotel.images.map((image, index) => {
               return (
-                <Image source={image} style={styles.hotelImage} key={index} />
+                <Image source={{uri:image}} style={styles.hotelImage} key={index} />
               );
             })}
           </ScrollView>
@@ -81,7 +82,6 @@ const HotelDetail = ({ route, navigation }) => {
           <View style={{ flexDirection: "row", marginLeft: 20 }}>
             <Entypo name="location" size={19} color="red" />
             <Text style={{ marginLeft: 4, fontSize: 16 }}>
-              {" "}
               {hotel.location}
             </Text>
           </View>
@@ -91,14 +91,16 @@ const HotelDetail = ({ route, navigation }) => {
                 hotels: [hotel, hotel, hotel, hotel, hotel],
                 previousHotelExist: true,
               })
-            }
+            } style={styles.mapIcon}
           >
             <Image
               source={require("../assets/Map.png")}
               resizeMode="contain"
-              style={styles.mapIcon}
+              style={{width: 35,
+                height: 35,}}
             />
           </TouchableOpacity>
+          <Amenities  amenities={hotel.amenities}/> 
 
           <View>
             <TouchableOpacity
@@ -215,6 +217,7 @@ const styles = StyleSheet.create({
   description: {
     marginHorizontal: 20,
     fontSize: 16,
+    fontFamily:'Roboto_400Regular_Italic',
   },
   topic: {
     marginLeft: 15,
