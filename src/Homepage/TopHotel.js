@@ -86,7 +86,7 @@ elevation: 14,
     marginBottom: 5,
   },
   hotelText: {
-    fontSize: 19,
+    fontSize: 16,
     flexShrink: 1,
     marginRight: 5,
     marginLeft: 10,

@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     },
     name: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 17,
     marginBottom: 5,
     marginTop: 9,
     },

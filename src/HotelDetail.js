@@ -9,19 +9,14 @@ import {
   ScrollView,
 } from "react-native";
 import Constants from "expo-constants";
-
-import { Entypo } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { Foundation } from "@expo/vector-icons";
-
+import { Entypo, AntDesign, Foundation, FontAwesome } from "@expo/vector-icons";
 import HotelCard_v2 from "./HotelCard_v2";
 import { Roboto_400Regular_Italic, useFonts } from "@expo-google-fonts/roboto";
 import { AppLoading } from "expo";
 import Amenities from "../Amenities";
 
-const windowWidth = Dimensions.get("window").width;
 const marginTop = Constants.statusBarHeight;
+const windowWidth = Dimensions.get("window").width;
 
 const HotelDetail = ({ route, navigation }) => {
   const { hotel } = route.params;
@@ -36,12 +31,16 @@ const HotelDetail = ({ route, navigation }) => {
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            decelerationRate="normal"
+            decelerationRate="fast"
             snapToInterval={windowWidth}
           >
             {hotel.images.map((image, index) => {
               return (
-                <Image source={{uri:image}} style={styles.hotelImage} key={index} />
+                <Image
+                  source={{ uri: image }}
+                  style={styles.hotelImage}
+                  key={index}
+                />
               );
             })}
           </ScrollView>
@@ -77,7 +76,9 @@ const HotelDetail = ({ route, navigation }) => {
             <AntDesign name="hearto" size={26} color="red" />
           </TouchableOpacity>
           <View style={styles.borderCover}>
-            <Text style={styles.hotelName}>{hotel.name}</Text>
+            <View style={{width: 360}}>
+              <Text style={styles.hotelName}>{hotel.name}</Text>
+            </View>
           </View>
           <View style={{ flexDirection: "row", marginLeft: 20 }}>
             <Entypo name="location" size={19} color="red" />
@@ -91,16 +92,16 @@ const HotelDetail = ({ route, navigation }) => {
                 hotels: [hotel, hotel, hotel, hotel, hotel],
                 previousHotelExist: true,
               })
-            } style={styles.mapIcon}
+            }
+            style={styles.mapIcon}
           >
             <Image
               source={require("../assets/Map.png")}
               resizeMode="contain"
-              style={{width: 35,
-                height: 35,}}
+              style={{ width: 35, height: 35 }}
             />
           </TouchableOpacity>
-          <Amenities  amenities={hotel.amenities}/> 
+          <Amenities amenities={hotel.amenities} />
 
           <View>
             <TouchableOpacity
@@ -174,9 +175,9 @@ const styles = StyleSheet.create({
   },
   hotelName: {
     fontWeight: "bold",
-    fontSize: 21,
+    fontSize: 19,
     marginLeft: 20,
-    marginBottom: 5,
+    marginTop: 10,
   },
   borderCover: {
     height: 51, // tại sao 51 lại sai
@@ -192,7 +193,7 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     position: "absolute",
-    top: 270,
+    top: 260,
     left: 350,
   },
   amenities: {
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
   description: {
     marginHorizontal: 20,
     fontSize: 16,
-    fontFamily:'Roboto_400Regular_Italic',
+    fontFamily: "Roboto_400Regular_Italic",
   },
   topic: {
     marginLeft: 15,
