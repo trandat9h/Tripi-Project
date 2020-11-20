@@ -14,9 +14,13 @@ import { AppLoading } from "expo";
 
 const marginTop = Constants.statusBarHeight;
 const cities = [
-  { name: "HÀ NỘI", image: require("../assets/hotel.jpg") },
-  { name: "ĐÀ NẴNG", image: require("../assets/hotel.jpg") },
-  { name: "ĐÀ LẠT", image: require("../assets/hotel.jpg") },
+  { name: "HÀ NỘI", image: require("../assets/HN.jpg") },
+  { name: "ĐÀ NẴNG", image: require("../assets/ĐN.jpg") },
+  { name: "ĐÀ LẠT", image: require("../assets/ĐL.jpg") },
+  { name: "PHÚ QUỐC", image: require("../assets/PQ.jpg") },
+  { name: "SÀI GÒN", image: require("../assets/SG.jpg") },
+  { name: "HẠ LONG", image: require("../assets/HL.jpg") },
+
 ];
 function HotelByCities({hotels}) {
   const navigation = useNavigation();

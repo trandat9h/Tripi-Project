@@ -28,14 +28,14 @@ export default function App() {
   return (
       <NavigationContainer>
         <Tab.Navigator screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({ focused, activeTintColor }) => (
             <AntDesign
               name={routeIcons[route.name]}
-              size={24}
-              color={focused ? "green" : "black"}
+              size={focused? 30: 24}
+              color={focused? "green": "black"}
             />
           ),
-        })}>
+        })} tabBarOptions={{showLabel:false, activeTintColor:"green"}}>
           <Tab.Screen name="Homepage" component={Homepage} options={({ route }) => ({
             tabBarVisible: getTabBarVisibility(route)
           })} />

@@ -38,7 +38,7 @@ const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const getHotel = () => {
     axios
-      .get("https://99050aacc62f.ngrok.io/homepage")
+      .get("https://11d4c3dd396d.ngrok.io/homepage")
       .then((res) => {
         setHotel(res.data), setLoading(false);
       })
@@ -51,14 +51,14 @@ const HomeScreen = () => {
     Roboto_400Regular_Italic,
     Roboto_500Medium_Italic,
   });
-  if (!fontsLoaded || loading === true) {
+  if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
       <ScrollView style={styles.container}>
         <View>
           <ImageBackground
-            source={require("../../assets/app-background.jpg")}
+            source={require("../../assets/cover.jpg")}
             style={styles.backgroundImage}
           >
             <Image
