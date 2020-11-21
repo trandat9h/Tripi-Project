@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Image, Text, Dimensions, TouchableOpacity, } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  Dimensions,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import Constants from "expo-constants";
 import {
   Roboto_400Regular_Italic,
@@ -8,18 +16,28 @@ import {
 } from "@expo-google-fonts/roboto";
 import { AppLoading } from "expo";
 import { AirbnbRating } from "react-native-ratings";
-import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
+import Autocomplete from "react-native-autocomplete-input";
 const marginTop = Constants.statusBarHeight;
 const windowWidth = Dimensions.get("window").width;
 function HotelSearchBar() {
-  const multiSliderValueChange= (values) => {
-      setMultiSliderValue(values)
-
+  const [multiSliderValue, setMultiSliderValue] = useState([100000, 1000000]);
+  const [cities, setCities] = useState(cityData);
+  const [selectedCity, setSelectedCity] = useState();
+  const [filteredCity, setFilteredCity] = useState([]);
+  function findCity(query) {
+    if (query) {
+      const regex = new RegExp(`${query.trim()}`, "i");
+      setFilteredCity(cities.filter((city) => city.search(regex) >= 0));
+    } else setFilteredCity([]);
   }
-  const ratingCompleted  = (rating) => {
-      console.log(rating);
+
+  const multiSliderValueChange = (values) => {
+    setMultiSliderValue(values);
   };
-  const [multiSliderValue, setMultiSliderValue] = useState([0,10]);
+  const ratingCompleted = (rating) => {
+    console.log(rating);
+  };
   let [fontsLoaded] = useFonts({
     Roboto_400Regular_Italic,
     Roboto_500Medium_Italic,
@@ -40,34 +58,44 @@ function HotelSearchBar() {
           reviews={["Terrible", "Bad", "Meh", "OK", "Good"]}
           defaultRating={5}
           size={35}
-          onFinishRating = {(rating) => ratingCompleted(rating)}
-          
+          onFinishRating={(rating) => ratingCompleted(rating)}
         />
         <Text> Giá</Text>
-        <View style={{alignItems:'center'}}>
-
-        <MultiSlider
-        values={[multiSliderValue[0],multiSliderValue[1]]}
-        sliderLength={300}
-        min={0}
-        max={10}
-        allowOverlap
-        onValuesChange={multiSliderValueChange} />
+        <View style={{ alignItems: "center" }}>
+          <MultiSlider
+            values={[multiSliderValue[0], multiSliderValue[1]]}
+            sliderLength={300}
+            min={100000}
+            max={1000000}
+            step={100000}
+            minMarkerOverlapDistance={10}
+            onValuesChange={multiSliderValueChange}
+          />
         </View>
-        <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-            <Text style={{marginLeft: 20,}}>
-                {multiSliderValue[0]} VND
-            </Text>
-            <Text style={{marginRight: 20,}}>
-                {multiSliderValue[1]} VND
-            </Text>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text style={{ marginLeft: 20 }}>{multiSliderValue[0]} VND</Text>
+          <Text style={{ marginRight: 20 }}>{multiSliderValue[1]} VND</Text>
         </View>
-        <Text>
-            Dịch vụ
-        </Text>
-            
-
-      
+        <Text>Thành phố</Text>
+        <Autocomplete
+          autoCapitalize="none"
+          autoCorrect={false}
+          data={filteredCity}
+          defaultValue={selectedCity}
+          onChangeText={(text) => findCity(text)}
+          placeholder="enter your city"
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
+              onPress={() => {
+                setSelectedCity(item);
+                setFilteredCity([]);
+              }}
+            >
+              <Text>{item}</Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(_, index) => index.toString()}
+        />
       </View>
     );
   }
@@ -89,5 +117,5 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
-
+const cityData = ["Hà Nội", "Sài Gòn", "Đà Lạt", "Vĩnh Phúc"];
 export default HotelSearchBar;

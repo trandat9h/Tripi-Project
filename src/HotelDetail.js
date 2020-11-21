@@ -76,8 +76,8 @@ const HotelDetail = ({ route, navigation }) => {
             <AntDesign name="hearto" size={26} color="red" />
           </TouchableOpacity>
           <View style={styles.borderCover}>
-            <View style={{width: 360}}>
-              <Text style={styles.hotelName}>{hotel.name}</Text>
+            <View style={{width: 340}}>
+              <Text style={styles.hotelName} numberOfLines={2} >{hotel.name}</Text>
             </View>
           </View>
           <View style={{ flexDirection: "row", marginLeft: 20 }}>

@@ -50,7 +50,7 @@ function HotelCard_v3({ hotel, city }) {
                 justifyContent: "space-between",
               }}
             >
-              <Text style={styles.hotelText}>{hotel.name}</Text>
+              <Text style={styles.hotelText} numberOfLines={3}>{hotel.name}</Text>
               <View style={{ flexDirection: "row" }}>
                 <Text style={styles.rating}>{hotel.rating}</Text>
                 <Foundation

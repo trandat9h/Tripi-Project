@@ -38,7 +38,7 @@ const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const getHotel = () => {
     axios
-      .get("https://11d4c3dd396d.ngrok.io/homepage")
+      .get("https://64019bd8568b.ngrok.io/homepage")
       .then((res) => {
         setHotel(res.data), setLoading(false);
       })
@@ -51,7 +51,7 @@ const HomeScreen = () => {
     Roboto_400Regular_Italic,
     Roboto_500Medium_Italic,
   });
-  if (!fontsLoaded) {
+  if (!fontsLoaded || loading ) {
     return <AppLoading />;
   } else {
     return (

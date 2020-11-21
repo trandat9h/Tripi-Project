@@ -43,7 +43,7 @@ function SearchResult({ navigation, route }) {
               <View
                 style={{ flexDirection: "row", marginTop: 5, marginLeft: 10 }}
               >
-                <Entypo name="location" size={23} color="red" />
+                <Entypo name="location" size={18} color="red" />
                 <Text style={styles.location}>{item.location}</Text>
               </View>
             </View>
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
   },
   name: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: "bold",
     marginLeft: 5,
   },
