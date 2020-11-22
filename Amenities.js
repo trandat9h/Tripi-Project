@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
     height: 100,
   },
   image: {
-      width: 50,
-      height: 50,
+      width: 30,
+      height: 30,
   },
   wrapper: {
       flexDirection:'column',

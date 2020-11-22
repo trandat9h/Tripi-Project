@@ -18,6 +18,7 @@ import SearchResult from "../Homepage/SearchResult";
 import BookingConfirmation from "../BookingConfirmation";
 import HotelSearchBar from "../HotelSearchBar";
 import HotelByCities from "../HotelByCities";
+import HotelResult from "../HotelResult";
 import TopRating from "../TopRating";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -38,7 +39,7 @@ const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const getHotel = () => {
     axios
-      .get("https://64019bd8568b.ngrok.io/homepage")
+      .get("https://b298c1e74d3f.ngrok.io/homepage")
       .then((res) => {
         setHotel(res.data), setLoading(false);
       })
@@ -115,6 +116,7 @@ function Homepage() {
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="HotelDetail" component={HotelDetail} />
       <Stack.Screen name="SearchResult" component={SearchResult} />
+      <Stack.Screen name="HotelResult" component={HotelResult} />
       <Stack.Screen
         name="BookingConfirmation"
         component={BookingConfirmation}

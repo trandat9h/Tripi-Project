@@ -9,22 +9,41 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 MongoClient = MongoClient('mongodb://127.0.0.1:27017')
 db = MongoClient.get_database('hotel_db')
-hotel_columns = db.get_collection('hotel_column')
+hotel_column = db.get_collection('hotel_column')
 
 
 @app.route('/homepage', methods=['GET'])
 def index():
     hotel_result = []
     count = 0
-    if hotel_columns.find({}):
-        for hotel in hotel_columns.find({}):
+    if hotel_column.find({}):
+        for hotel in hotel_column.find({}):
             hotel_result.append({"name": hotel['name'], "amenities": [1, 1, 0, 1, 1, 1], "location": hotel['address'],
-                                 "rating": 2, "commentNumber": hotel['reviews_number'], "price": 100, "images": [hotel['provider_url']],"coordinate":{"latitude": hotel['latitude'],"longitude": hotel['longitude']},'description':hotel['description']})
+                                 "rating": 2, "commentNumber": hotel['reviews_number'], "price": 1000000, "images": [hotel['provider_url']],"coordinate":{"latitude": hotel['latitude'],"longitude": hotel['longitude']},'description':hotel['description']})
             count += 1
             if count == 4:
                 break
     return json.dumps(hotel_result)
     # return jsonify(hotel)
+
+@app.route('/filter', methods=['POST'])
+def search():
+    city = 43
+    requestData = request.json
+    #return json.dumps(requestData)
+    hotel_result = []
+    count = 0
+    if requestData['cityFilter'] =='Hà Nội':
+        city = 15
+    if hotel_column.find({}):
+        for hotel in hotel_column.find({'province_id': city}):
+            hotel_result.append({"name": hotel['name'], "amenities": [1, 1, 0, 1, 1, 1], "location": hotel['address'],
+                                 "rating": 2, "commentNumber": hotel['reviews_number'], "price": 1000000, "images": [hotel['provider_url']],"coordinate":{"latitude": hotel['latitude'],"longitude": hotel['longitude']},'description':hotel['description']})
+            count += 1
+            if count == 4:
+                break
+    return json.dumps(hotel_result)
+
 
 
 if __name__ == '__main__':
