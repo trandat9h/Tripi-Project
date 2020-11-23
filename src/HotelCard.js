@@ -12,6 +12,7 @@ import {Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Roboto_400Regular_Italic, useFonts } from "@expo-google-fonts/roboto";
 import { AppLoading } from "expo";
+import NumberFormat from 'react-number-format';
 import Star from 'react-native-star-view';
 const windowWidth = Dimensions.get("window").width;
 function HotelCard({ hotel }) {
@@ -45,7 +46,7 @@ function HotelCard({ hotel }) {
                   </Text>
                 </View>
                 <View style={{flexDirection:'row', justifyContent:"space-between"}}>
-                <Text style={styles.price}>{hotel.price} VND</Text>
+                <NumberFormat value={hotel.price} thousandSeparator={true} displayType={'text'} renderText={value=><Text style={styles.price}>{value} VND</Text>}/>
                 <Star score ={hotel.rating} style={styles.starRating} />
                 </View>
               </View>

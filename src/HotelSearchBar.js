@@ -58,6 +58,7 @@ function HotelSearchBar() {
       maxPriceFilter: multiSliderValue[1],
       star: ranking,
       serviceFilter: serviceFilterArray,
+      hotelCountResult: 10,
     })
   
   }
@@ -194,11 +195,13 @@ const styles = StyleSheet.create({
   }
 });
 const tagData = [
-  { id: 1, label: "Money" },
-  { id: 2, label: "Credit card" },
-  { id: 3, label: "Debit card" },
-  { id: 4, label: "Online payment" },
-  { id: 5, label: "Bitcoin" },
+  { id: 1, label: "Bể bơi" },
+  { id: 2, label: "Đưa đón sân bay" },
+  { id: 3, label: "Nhà hàng" },
+  { id: 4, label: "Dịch vụ trông trẻ" },
+  { id: 5, label: "Dịch vụ giặt ủi" },
+  { id: 6, label: "Quán Bar" },
+  { id: 7, label: "Phòng xông hơi" },
 ];
 const cityData = [
   "Thừa Thiên - Huế",

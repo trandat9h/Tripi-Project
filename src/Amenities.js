@@ -2,29 +2,54 @@ import React from "react";
 import { StyleSheet, View, Image, Text, ScrollView } from "react-native";
 const amenityImages = [
   {
-    name: "Club",
-    image: require("../Tripi/assets/Club.png"),
+    name: "Bar",
+    image: require("../assets/Bar.png"),
   },
   {
-    name: "Massage",
-    image: require("../Tripi/assets/massage.png"),
+    name: "Currency exchange",
+    image: require("../assets/currency-exchange.png"),
   },
   {
-    name: "Sauna",
-    image: require("../Tripi/assets/sauna.png"),
+    name: "Giặt là",
+    image: require("../assets/laundry.png"),
+  },
+  {
+    name: "Nhà hàng",
+    image: require("../assets/restaurant.png"),
+  },
+  {
+    name: "Két sắt",
+    image: require("../assets/safe.png"),
+  },
+  {
+    name: "Cửa hàng",
+    image: require("../assets/shop.png"),
+  },
+  {
+    name: "Mát xa",
+    image: require("../assets/massage.png"),
   },
   {
     name: "Spa",
-    image: require("../Tripi/assets/Club.png"),
+    image: require("../assets/spa.png"),
   },
   {
-    name: "Swimming",
-    image: require("../Tripi/assets/swimming-pool.png"),
+    name: "Dịch vụ 24h",
+    image: require("../assets/support-24h-service.png"),
   },
   {
-    name: "Tour",
-    image: require("../Tripi/assets/tour.png"),
+    name: "Bể bơi",
+    image: require("../assets/swimming-pool.png"),
   },
+  {
+    name: "Tour tham quan",
+    image: require("../assets/tour-guide.png"),
+  },
+  {
+    name: "Trẻ em",
+    image: require("../assets/baby.png"),
+  },
+  
 ];
 function Amenities({ amenities }) {
   return (

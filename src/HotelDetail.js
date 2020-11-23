@@ -13,7 +13,8 @@ import { Entypo, AntDesign, Foundation, FontAwesome } from "@expo/vector-icons";
 import HotelCard_v2 from "./HotelCard_v2";
 import { Roboto_400Regular_Italic, useFonts } from "@expo-google-fonts/roboto";
 import { AppLoading } from "expo";
-import Amenities from "../Amenities";
+import Amenities from "./Amenities";
+import NumberFormat from "react-number-format";
 
 const marginTop = Constants.statusBarHeight;
 const windowWidth = Dimensions.get("window").width;
@@ -82,14 +83,14 @@ const HotelDetail = ({ route, navigation }) => {
           </View>
           <View style={{ flexDirection: "row", marginLeft: 20 }}>
             <Entypo name="location" size={19} color="red" />
-            <Text style={{ marginLeft: 4, fontSize: 16 }}>
+            <Text style={{ marginLeft: 4, fontSize: 16, width: 370, }}>
               {hotel.location}
             </Text>
           </View>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("SearchResult", {
-                hotels: [hotel, hotel, hotel, hotel, hotel],
+                hotels: [hotel],
                 previousHotelExist: true,
               })
             }
@@ -154,9 +155,7 @@ const HotelDetail = ({ route, navigation }) => {
             navigation.navigate("BookingConfirmation", { hotel: hotel });
           }}
         >
-          <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-            {hotel.price}VND / day
-          </Text>
+          <NumberFormat value={hotel.price} thousandSeparator={true} displayType={'text'} renderText={value=><Text style={{fontWeight:"bold",fontSize: 20, color:"white"}}>{value} VND / Ngày </Text>}/>
         </TouchableOpacity>
       </View>
     );

@@ -39,7 +39,7 @@ const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const getHotel = () => {
     axios
-      .get("https://b298c1e74d3f.ngrok.io/homepage")
+      .get("https://daadbd5e65cf.ngrok.io/homepage")
       .then((res) => {
         setHotel(res.data), setLoading(false);
       })
