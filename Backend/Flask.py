@@ -1,90 +1,122 @@
-from flask import Flask, jsonify, request   
+from flask import Flask, jsonify, request
 from pymongo import MongoClient
 from flask_cors import CORS, cross_origin
 import json
+
+import pandas as pd
+import datetime
+import time
+import matplotlib.pyplot as plt
+import sqlite3
+from gensim.models import Word2Vec
+import multiprocessing
+from suggest import suggest
+
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 MongoClient = MongoClient('mongodb://127.0.0.1:27017')
-db= MongoClient.get_database('hotel_db')
-hotel_columns = db.get_collection('hotel_columns')
-hotel = [
-    {
-    "name": "hello",
-    "location": "bla blo",
-    "rating": 4,
-    "commentNumber": 5,
-    "likeNumber": 10,
-    "price": 100,
-    "images": [
-      "https://pix6.agoda.net/hotelImages/109/10960/10960_14030410560018536291.jpg?s=1024x770",									
-     "https://pix6.agoda.net/hotelImages/109/10960/10960_16063010130044276883.jpg?s=1024x768",
-      "https://pix6.agoda.net/hotelImages/109/10960/10960_16122818320050019719.jpg?s=1024x768",
-    ],
-    "coordinate": {
-      "latitude": 21.0331573486328,
-      "longitude": 105.807968139648,
-    },
-    "amenities": [1,1,0,1,1,1],
-    "description":
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  },
-  {
-    "name": "Khách sạn Sofitel Legend Metropole Hà Nội",
-    "location": "Số 15, Phố Ngô Quyền, Quận Hoàn Kiếm, Quận Hoàn Kiếm, Hà Nội, Việt Nam",
-    "rating": 4,
-    "commentNumber": 5,
-    "likeNumber": 10,
-    "price": 300,
-    "images": [
-      "https://pix6.agoda.net/hotelImages/109/10960/10960_14030410560018536291.jpg?s=1024x770",									
-     "https://pix6.agoda.net/hotelImages/109/10960/10960_16063010130044276883.jpg?s=1024x768",
-      "https://pix6.agoda.net/hotelImages/109/10960/10960_16122818320050019719.jpg?s=1024x768",
-    ],
-    "coordinate": {
-      "latitude": 21.0177397649356,
-      "longitude": 105.841995477676,
-    },
-    "amenities": [1,1,0,1,1,1],
-    "description":
-      "Khách sạn Sofitel Legend Metropole Hà Nội được xây dựng vào năm 1901 thời thuộc địa Pháp. Nằm ở trung tâm Hà Nội, khách sạn có một lịch sử phong phú và truyền thống kéo dài một thế kỷ phục vụ các vị đại sứ, nhà văn, chính khách quốc gia và doanh nhân. Một khu vườn đẹp, ẩm thực Pháp tại Le Beaulieu và đặc sản Hà Nội tại nhà hàng Spices Garden. Khách sạn Sofitel Legend Metropole Hà Nội có năm phòng hội nghị, một hồ bơi và phòng tập thể dục luôn đón tiếp khách hàng. Khách sạn Sofitel Legend Metropole Hà Nội đã được dùng là một điểm mốc kỷ niệm ngày thế kỷ cũ trôi qua. Du khách sẽ được thưởng thức sự duyên dáng, pha trộn sự hiếu khách của người Việt Nam với di sản châu Âu sang trọng.",
-  },
-  {
-    "name": "Khách Sạn du Parc Hà Nội",
-    "location": "84 Trần Nhân Tông, Quận Hai Bà Trưng, Hà Nội",
-    "rating": 4,
-    "commentNumber": 5,
-    "likeNumber": 10,
-    "price": 200,
-    "images": [
-      "https://pix6.agoda.net/hotelImages/109/10960/10960_14030410560018536291.jpg?s=1024x770",									
-     "https://pix6.agoda.net/hotelImages/109/10960/10960_16063010130044276883.jpg?s=1024x768",
-      "https://pix6.agoda.net/hotelImages/109/10960/10960_16122818320050019719.jpg?s=1024x768",
-    ],
-    "coordinate": {
-      "latitude": 21.0256214141845,
-      "longitude": 105.855667114257,
-    },
-    "amenities": [1,1,0,1,1,1],
-    "description":
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  },
-]
+db = MongoClient.get_database('hotel_db')
+hotel_column = db.get_collection('hotel_column')
+predict_input = []
+
+
 @app.route('/homepage', methods=['GET'])
 def index():
-  hotel_result = []
-  count = 0
-  if hotel_columns.find({}):
-    for hotel in hotel_columns.find({}):
-      hotel_result.append({"name": hotel['name_OTA']})
-      count += 1
-      if count == 4:
-        break
-  return json.dumps(hotel_result)
-  #return jsonify(hotel)
+    hotel_result = []
+    count = 0
+    if hotel_column.find({}):
+        for hotel in hotel_column.find({}):
+            hotel_result.append({"name": hotel['name'], "amenities": [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1], "location": hotel['address'],
+                                 "rating": 2, "price": 1000000, "images": [hotel['provider_url_1'], hotel['provider_url_2'], hotel['provider_url_3']], "coordinate": {"latitude": hotel['latitude'], "longitude": hotel['longitude']}, 'description': hotel['description'], 'hotel_id': hotel['hotel_id']})
+            count += 1
+            if count == 4:
+                break
+    return json.dumps(hotel_result)
 
+
+@app.route('/filter', methods=['GET', 'POST'])
+def search():
+    requestData = request.json
+    hotel_result = []
+    count = 0
+    if hotel_column.find({}):
+        for hotel in hotel_column.find({'province': requestData['cityFilter'], 'star_number': requestData['star'], 'price_mean': {"$gt": requestData['minPriceFilter'], "$lt": requestData['maxPriceFilter']}}):
+            count += 1
+            if (count >= (requestData['hotelCountResult']-10) and count < requestData['hotelCountResult']):
+                services = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                services[0] = hotel['night_club']
+                services[1] = hotel['currency_exchange']
+                services[2] = hotel['laundry_service']
+                services[3] = hotel['restaurants']
+                services[4] = hotel['luggage_storage']
+                services[5] = hotel['shops']
+                services[6] = hotel['relax_massage']
+                services[7] = hotel['relax_spa']
+                services[8] = hotel['room_service_24_hour']
+                services[9] = hotel['relax_pool']
+                services[10] = hotel['tours']
+                services[11] = hotel['baby_sitting']
+                hotel_result.append({"name": hotel['name'], "amenities": services, "location": hotel['address'],
+                                     "rating": hotel['star_number'], "price": hotel['price_mean'], "images": [hotel['provider_url_1'], hotel['provider_url_2'], hotel['provider_url_3']], "coordinate": {"latitude": hotel['latitude'], "longitude": hotel['longitude']}, 'description': hotel['description'], 'hotel_id': hotel['hotel_id']})
+    return json.dumps(hotel_result)
+
+
+@app.route('/cityFilter', methods=['POST','GET'])
+def cityFilter():
+    hotel_result=[]
+    requestData = request.json
+    count = 0
+    if hotel_column.find({}):
+        for hotel in hotel_column.find({'province': requestData['city']}):
+            count += 1
+            services = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            services[0] = hotel['night_club']
+            services[1] = hotel['currency_exchange']
+            services[2] = hotel['laundry_service']
+            services[3] = hotel['restaurants']
+            services[4] = hotel['luggage_storage']
+            services[5] = hotel['shops']
+            services[6] = hotel['relax_massage']
+            services[7] = hotel['relax_spa']
+            services[8] = hotel['room_service_24_hour']
+            services[9] = hotel['relax_pool']
+            services[10] = hotel['tours']
+            services[11] = hotel['baby_sitting']
+            hotel_result.append({"name": hotel['name'], "amenities": services, "location": hotel['address'],
+                                 "rating": hotel['star_number'], "price": hotel['price_mean'], "images": [hotel['provider_url_1'], hotel['provider_url_2'], hotel['provider_url_3']], "coordinate": {"latitude": hotel['latitude'], "longitude": hotel['longitude']}, 'description': hotel['description'], 'hotel_id': hotel['hotel_id']})
+            if count == 10:
+                break
+    return json.dumps(hotel_result)
+
+
+@app.route('/updateModal', methods=['POST', 'GET'])
+def idAdd():
+    requestData = request.json
+    predict_input.append(requestData['Id'])
+    return json.dumps(predict_input)
+
+
+@app.route('/predict', methods=['GET', 'POST'])
+def predict():
+    hotel_result = []
+    # requestData = request.json
+    # hotel_result.append(requestData['Id'])
+
+    cur_session = []
+    MODEL_PATH = 'model/hotel_session.model'
+    model = Word2Vec.load(MODEL_PATH)
+    item = list(model.wv.vocab.keys())
+    n = 4
+    for i in range(n):
+        cur_session.append(item[i])
+
+    # cur_session = ['45005', '43280', '29494', '45477']
+    hotel_result = suggest(cur_session, 5)
+    # hotel_result = ['45463', '45576', '45572', '45545', '29792']
+    return json.dumps(hotel_result)
 
 
 if __name__ == '__main__':

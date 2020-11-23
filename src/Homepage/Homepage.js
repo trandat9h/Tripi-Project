@@ -18,6 +18,7 @@ import SearchResult from "../Homepage/SearchResult";
 import BookingConfirmation from "../BookingConfirmation";
 import HotelSearchBar from "../HotelSearchBar";
 import HotelByCities from "../HotelByCities";
+import HotelResult from "../HotelResult";
 import TopRating from "../TopRating";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -38,7 +39,7 @@ const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const getHotel = () => {
     axios
-      .get("https://11d4c3dd396d.ngrok.io/homepage")
+      .get("https://b79ff2b133f8.ngrok.io/homepage")
       .then((res) => {
         setHotel(res.data), setLoading(false);
       })
@@ -51,7 +52,7 @@ const HomeScreen = () => {
     Roboto_400Regular_Italic,
     Roboto_500Medium_Italic,
   });
-  if (!fontsLoaded) {
+  if (!fontsLoaded || loading ) {
     return <AppLoading />;
   } else {
     return (
@@ -91,16 +92,16 @@ const HomeScreen = () => {
           </ImageBackground>
         </View>
         <View>
-          <Text style={styles.topic}>Được đề xuất cho bạn</Text>
+         <Text style={styles.topic}>Đề xuất riêng cho bạn</Text>
+          <Text style={styles.subTopic}> 1 câu làm câu trên ngầu hơn</Text>
+          <TopRating hotels={hotel} />
+          <Text style={styles.topic}>Khách sạn hàng đầu Việt Nam</Text>
           <Text style={styles.subTopic}> Top khách sạn hàng đầu Việt Nam</Text>
           <TopHotel hotels={hotel} />
         </View>
         <View>
           <Text style={styles.topic}>Mùa đông này mình đi đâu?</Text>
           <HotelByCities  hotels={hotel}/>
-          <Text style={styles.topic}>1 cái gì đó ngầu ko kém</Text>
-          <Text style={styles.subTopic}> 1 câu làm câu trên ngầu hơn</Text>
-          <TopRating hotels={hotel} />
         </View>
       </ScrollView>
     );
@@ -115,6 +116,7 @@ function Homepage() {
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="HotelDetail" component={HotelDetail} />
       <Stack.Screen name="SearchResult" component={SearchResult} />
+      <Stack.Screen name="HotelResult" component={HotelResult} />
       <Stack.Screen
         name="BookingConfirmation"
         component={BookingConfirmation}

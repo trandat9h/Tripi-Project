@@ -15,6 +15,10 @@ import { useNavigation } from "@react-navigation/native";
 import { Roboto_400Regular_Italic, useFonts } from "@expo-google-fonts/roboto";
 import { AppLoading } from "expo";
 
+import HotelCard from "../HotelCard";
+import HotelCard_v2 from "../HotelCard_v2";
+import NumberFormat from 'react-number-format';
+
 
 
 const windowWidth = Dimensions.get("window").width;
@@ -24,8 +28,6 @@ function SearchResult({ navigation, route }) {
   const hotels = route.params.hotels;
 
   const renderCarouselItem = ({ item }) => {
-    //const navigation = useNavigation();
-    
     return (
       <TouchableOpacity
         onPress={() => {
@@ -33,7 +35,8 @@ function SearchResult({ navigation, route }) {
           navigation.navigate("HotelDetail", { hotel: item });
         }}
       >
-        <View style={styles.carouselItem}>
+        <HotelCard hotel={item} />
+        {/* <View style={styles.carouselItem}>
           <Image source={{uri:item.images[0]}} style={styles.image} />
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
@@ -43,19 +46,19 @@ function SearchResult({ navigation, route }) {
               <View
                 style={{ flexDirection: "row", marginTop: 5, marginLeft: 10 }}
               >
-                <Entypo name="location" size={23} color="red" />
+                <Entypo name="location" size={18} color="red" />
                 <Text style={styles.location}>{item.location}</Text>
               </View>
             </View>
             <View style={{ flexDirection: "column" }}>
-              <Text style={styles.price}>{item.price}$</Text>
+              <Text style={styles.price}>{item.price} VND</Text>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text style={styles.rating}>{item.rating}</Text>
                 <AntDesign name="star" size={24} color="yellow" />
               </View>
             </View>
           </View>
-        </View>
+        </View> */}
       </TouchableOpacity>
     );
   };
@@ -85,8 +88,8 @@ function SearchResult({ navigation, route }) {
           flex: 1,
         }}
         initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: hotels[0].coordinate.latitude,
+          longitude: hotels[0].coordinate.longitude,
           latitudeDelta: 0.1122,
           longitudeDelta: 0.1121,
         }}
@@ -101,9 +104,7 @@ function SearchResult({ navigation, route }) {
             }}
           >
             <Callout>
-              <Text>
-                {hotel.price} VND
-              </Text>
+            <NumberFormat value={Math.round(hotel.price)} thousandSeparator={true} displayType={'text'} renderText={value=><Text>{value} VND</Text>}/>
             </Callout>
           </Marker>
         ))}
@@ -113,7 +114,7 @@ function SearchResult({ navigation, route }) {
         renderItem={renderCarouselItem}
         containerCustomStyle={styles.carousel}
         sliderWidth={windowWidth}
-        itemWidth={350}
+        itemWidth={windowWidth-40}
         onSnapToItem={(index) => onCarouselItemChange(index)}
       />
 
@@ -135,12 +136,12 @@ const styles = StyleSheet.create({
   },
   carousel: {
     position: "absolute",
-    bottom: 20,
+    bottom: 10,
   },
   carouselItem: {
     backgroundColor: "white",
-    height: 200,
-    width: 350,
+    height: 235,
+    width: windowWidth-40,
     borderRadius: 20,
   },
   image: {
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
   },
   name: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: "bold",
     marginLeft: 5,
   },

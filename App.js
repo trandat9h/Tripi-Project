@@ -19,7 +19,7 @@ const routeIcons = {
 };
 const getTabBarVisibility =(route) => {
   const routeName = route.state ? route.state.routes[route.state.index].name : '';
-  if (routeName === 'HotelDetail' || routeName ==='SearchResult' || routeName ==='BookingConfirmation' || routeName ==='HotelSearchBar') {
+  if (routeName === 'HotelDetail' || routeName ==='SearchResult' || routeName ==='BookingConfirmation' || routeName ==='HotelSearchBar' || routeName ==='HotelResult') {
     return false;
   }
   return true;
