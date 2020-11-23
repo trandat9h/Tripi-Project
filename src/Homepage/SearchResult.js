@@ -17,6 +17,7 @@ import { AppLoading } from "expo";
 
 import HotelCard from "../HotelCard";
 import HotelCard_v2 from "../HotelCard_v2";
+import NumberFormat from 'react-number-format';
 
 
 
@@ -103,9 +104,7 @@ function SearchResult({ navigation, route }) {
             }}
           >
             <Callout>
-              <Text>
-                {hotel.price} VND
-              </Text>
+            <NumberFormat value={Math.round(hotel.price)} thousandSeparator={true} displayType={'text'} renderText={value=><Text>{value} VND</Text>}/>
             </Callout>
           </Marker>
         ))}

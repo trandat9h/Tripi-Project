@@ -39,7 +39,7 @@ const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const getHotel = () => {
     axios
-      .get("https://daadbd5e65cf.ngrok.io/homepage")
+      .get("https://1c058dc3e235.ngrok.io/homepage")
       .then((res) => {
         setHotel(res.data), setLoading(false);
       })
@@ -92,16 +92,16 @@ const HomeScreen = () => {
           </ImageBackground>
         </View>
         <View>
-          <Text style={styles.topic}>Được đề xuất cho bạn</Text>
+         <Text style={styles.topic}>Đề xuất riêng cho bạn</Text>
+          <Text style={styles.subTopic}> 1 câu làm câu trên ngầu hơn</Text>
+          <TopRating hotels={hotel} />
+          <Text style={styles.topic}>Khách sạn hàng đầu Việt Nam</Text>
           <Text style={styles.subTopic}> Top khách sạn hàng đầu Việt Nam</Text>
           <TopHotel hotels={hotel} />
         </View>
         <View>
           <Text style={styles.topic}>Mùa đông này mình đi đâu?</Text>
           <HotelByCities  hotels={hotel}/>
-          <Text style={styles.topic}>1 cái gì đó ngầu ko kém</Text>
-          <Text style={styles.subTopic}> 1 câu làm câu trên ngầu hơn</Text>
-          <TopRating hotels={hotel} />
         </View>
       </ScrollView>
     );

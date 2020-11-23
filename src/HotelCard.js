@@ -46,7 +46,7 @@ function HotelCard({ hotel }) {
                   </Text>
                 </View>
                 <View style={{flexDirection:'row', justifyContent:"space-between"}}>
-                <NumberFormat value={hotel.price} thousandSeparator={true} displayType={'text'} renderText={value=><Text style={styles.price}>{value} VND</Text>}/>
+                <NumberFormat value={Math.round(hotel.price)} thousandSeparator={true} displayType={'text'} renderText={value=><Text style={styles.price}>{value} VND</Text>}/>
                 <Star score ={hotel.rating} style={styles.starRating} />
                 </View>
               </View>

@@ -23,6 +23,7 @@ import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import Autocomplete from "react-native-autocomplete-input";
 import { useNavigation } from "@react-navigation/native";
 import {TagSelect} from 'react-native-tag-select';
+import {AntDesign} from '@expo/vector-icons';
 const marginTop = Constants.statusBarHeight;
 const windowWidth = Dimensions.get("window").width;
 function HotelSearchBar() {
@@ -74,6 +75,22 @@ function HotelSearchBar() {
   } else {
     return (
       <View style={styles.container}>
+        <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              position: "absolute",
+              top: 20,
+              left: 20,
+              backgroundColor: "#f9f9f9",
+              height: 36,
+              width: 36,
+              borderRadius: 18,
+            }}
+          >
+            <AntDesign name="arrowleft" size={26} color="black" />
+          </TouchableOpacity>
         <Text style={styles.slogan}>Bộ lọc</Text>
         <Text style={styles.topic}>Thành phố</Text>
         <Autocomplete
@@ -99,8 +116,8 @@ function HotelSearchBar() {
         <View style={{ height: 50 }} />
         <Text style={styles.topic}> Hạng khách sạn</Text>
         <AirbnbRating
+          showRating={false}
           count={5}
-          reviews={["Terrible", "Bad", "Meh", "OK", "Good"]}
           defaultRating={5}
           size={28}
           onFinishRating={(rating) => ratingCompleted(rating)}
@@ -152,6 +169,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: marginTop,
+    backgroundColor:"#EFEFEF",
   },
   imageBackground: {
     width: windowWidth,
@@ -168,6 +186,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontFamily: "Roboto_700Bold",
     marginLeft: 20,
+    marginBottom: 20,
   },
   continueButton: {
     position: "absolute",
@@ -184,7 +203,7 @@ const styles = StyleSheet.create({
     flex: 1,
     left: 0,
     position: "absolute",
-    top: 100,
+    top: 110,
     right: 0,
     zIndex: 1,
   },
