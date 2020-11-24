@@ -24,7 +24,7 @@ const cities = [
 
 ];
 function HotelByCities() {
-  const URL = 'https://1c058dc3e235.ngrok.io/cityFilter';
+  const URL = 'https://5c11a2ba391d.ngrok.io/cityFilter';
   const [loading, setLoading] = useState(true);
   const [hotels, setHotel] = useState([]);
   const navigation = useNavigation();
@@ -45,7 +45,7 @@ function HotelByCities() {
   }
   useEffect(() =>{getHotel()}, []);
   let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic });
-  if (!fontsLoaded || loading) {
+  if (!fontsLoaded) {
     return <AppLoading />;
   } else {
   return (

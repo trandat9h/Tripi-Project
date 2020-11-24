@@ -23,7 +23,7 @@ function HotelCard_v3({ hotel, city }) {
           <View style={styles.hotelWrapper}>
             <Image
               style={styles.image}
-              source={require("../assets/hotel.jpg")}
+              source={{ uri: hotel.images[0] }}
             />
             <Entypo
               name="heart-outlined"

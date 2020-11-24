@@ -24,13 +24,14 @@ import Autocomplete from "react-native-autocomplete-input";
 import { useNavigation } from "@react-navigation/native";
 import {TagSelect} from 'react-native-tag-select';
 import {AntDesign} from '@expo/vector-icons';
+import NumberFormat from 'react-number-format';
 const marginTop = Constants.statusBarHeight;
 const windowWidth = Dimensions.get("window").width;
 function HotelSearchBar() {
   let tagRef = useRef();
   const navigation = useNavigation();
   const [ranking, setRanking] = useState(-1);
-  const [multiSliderValue, setMultiSliderValue] = useState([100000, 1000000]);
+  const [multiSliderValue, setMultiSliderValue] = useState([100000, 10000000]);
   const [cities, setCities] = useState(cityData);
   const [selectedCity, setSelectedCity] = useState();
   const [filteredCity, setFilteredCity] = useState([]);
@@ -94,6 +95,8 @@ function HotelSearchBar() {
         <Text style={styles.slogan}>Bộ lọc</Text>
         <Text style={styles.topic}>Thành phố</Text>
         <Autocomplete
+        //style={{backgroundColor:"red", padding: 10,borderRadius: 16,}}
+        //inputContainerStyle={{backgroundColor:"blue", padding: 13,}}
           containerStyle={styles.autoCompleteInput}
           autoCapitalize="none"
           autoCorrect={false}
@@ -136,12 +139,26 @@ function HotelSearchBar() {
           />
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={{ marginLeft: 20, fontFamily: "Roboto_400Regular" }}>
-            {multiSliderValue[0]} Đ
-          </Text>
-          <Text style={{ marginRight: 20, fontFamily: "Roboto_400Regular" }}>
-            {multiSliderValue[1]} Đ
-          </Text>
+        <NumberFormat
+            value={multiSliderValue[0]}
+            thousandSeparator={true}
+            displayType={"text"}
+            renderText={(value) => (
+              <Text style={{marginLeft: 20,}}>
+                {value} Đ
+              </Text>
+            )}
+          />
+          <NumberFormat
+            value={multiSliderValue[1]}
+            thousandSeparator={true}
+            displayType={"text"}
+            renderText={(value) => (
+              <Text style={{marginRight: 20,}}>
+                {value} Đ
+              </Text>
+            )}
+          />
         </View>
         <Text style={styles.topic}> Dịch vụ</Text>
         <TagSelect
@@ -200,12 +217,12 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   autoCompleteInput: {
-    flex: 1,
     left: 0,
     position: "absolute",
     top: 110,
     right: 0,
     zIndex: 1,
+    borderRadius: 20,
   },
   tagItem:{
     marginLeft: 20,

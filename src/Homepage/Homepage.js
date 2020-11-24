@@ -20,6 +20,7 @@ import HotelSearchBar from "../HotelSearchBar";
 import HotelByCities from "../HotelByCities";
 import HotelResult from "../HotelResult";
 import TopRating from "../TopRating";
+import Reviews from "../Reviews";
 import { useNavigation } from "@react-navigation/native";
 import {
   Roboto_400Regular_Italic,
@@ -28,6 +29,8 @@ import {
 } from "@expo-google-fonts/roboto";
 import { AppLoading } from "expo";
 import axios from "axios";
+import {Buffer} from 'buffer';
+
 const Stack = createStackNavigator();
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -37,14 +40,32 @@ const HomeScreen = () => {
   const navigation = useNavigation();
   const [hotel, setHotel] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [predictedHotel, setPredictedHotel] = useState([]);
   const getHotel = () => {
+    const homepageURL = "https://5c11a2ba391d.ngrok.io/homepage";
+    const predictURL = "https://5c11a2ba391d.ngrok.io/predict";
+    const requestOne = axios.get(homepageURL);
+    const requestTwo = axios.get(predictURL);
+    axios.all([requestOne, requestTwo]).then(axios.spread((...response) =>{
+      const responseOne = response[0].data;
+      const responseTwo = response[1].data;
+      setLoading(false);
+      setHotel(responseOne);
+      //console.log(responseTwo);
+      setPredictedHotel(responseTwo);
+    })).catch(err => console.log(err+'homepage'))}
+    /*
     axios
-      .get("https://1c058dc3e235.ngrok.io/homepage")
+      .get("https://10759b302840.ngrok.io/homepage")
       .then((res) => {
         setHotel(res.data), setLoading(false);
       })
-      .catch((error) => console.log(error));
-  };
+      .catch((error) => console.log(error+'homepage'));
+
+    axios.get("https://10759b302840.ngrok.io/predict")
+    .then((res) =>{console.log(res.data), setLoading(false)})
+    .catch((err) => console.log(err+'hi'))
+  }; */
   useEffect(() => {
     getHotel();
   }, []);
@@ -94,7 +115,7 @@ const HomeScreen = () => {
         <View>
          <Text style={styles.topic}>Đề xuất riêng cho bạn</Text>
           <Text style={styles.subTopic}> 1 câu làm câu trên ngầu hơn</Text>
-          <TopRating hotels={hotel} />
+          <TopRating hotels={predictedHotel} />
           <Text style={styles.topic}>Khách sạn hàng đầu Việt Nam</Text>
           <Text style={styles.subTopic}> Top khách sạn hàng đầu Việt Nam</Text>
           <TopHotel hotels={hotel} />
@@ -118,8 +139,8 @@ function Homepage() {
       <Stack.Screen name="SearchResult" component={SearchResult} />
       <Stack.Screen name="HotelResult" component={HotelResult} />
       <Stack.Screen
-        name="BookingConfirmation"
-        component={BookingConfirmation}
+        name="Reviews"
+        component={Reviews}
       />
       <Stack.Screen name="HotelSearchBar" component={HotelSearchBar} />
     </Stack.Navigator>

@@ -1,41 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
 import { Entypo, AntDesign } from "@expo/vector-icons";
 import { Roboto_400Regular_Italic, useFonts } from "@expo-google-fonts/roboto";
 import { AppLoading } from "expo";
-import Star from 'react-native-star-view';
+import Star from "react-native-star-view";
 import { useNavigation } from "@react-navigation/native";
-import NumberFormat from 'react-number-format';
-function HotelCard_v2({ hotel}) {
+import NumberFormat from "react-number-format";
+import { Buffer } from "buffer";
+import axios from "axios";
+import { useEffect } from "react";
+function HotelCard_v2({ hotel }) {
+  const newHotel = hotel;
+  const [price, setPrice] = useState(0);
+  const token = Buffer.from(`O_VN:pf6zLZs5bOMnpQ8aMk4x`, "utf8").toString(
+    "base64"
+  );
+  const callPrice = () => {
+    axios
+      .post(
+        "https://tripgle.data.tripi.vn/get_price",
+        { hotel_ids: `${hotel.domain_id}_${hotel.domain_hotel_id}_20201124` },
+        {
+          headers: {
+            Authorization: `Basic ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        setPrice(res.data[0][0].final_amount);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    callPrice();
+  }, []);
   const navigation = useNavigation();
   let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic });
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate("HotelDetail",{hotel:hotel})}>
-      <View style={styles.container}>
-        <Image style={styles.image} source={{uri:hotel.images[0]}} />
-        <View style={styles.info}>
-          <Text style={styles.name} numberOfLines={1}>
-            {hotel.name}
-          </Text>
-          <View style={{ flexDirection: "row" }}>
-            <Entypo
-              name="location"
-              size={20}
-              color="red"
-              style={{ marginRight: 5 }}
-            />
-            <Text style={{ width: 221 }} numberOfLines={2}>
-              {hotel.location}
+      <TouchableOpacity
+        onPress={() => navigation.navigate("HotelDetail", { hotel: hotel })}
+      >
+        <View style={styles.container}>
+          <Image style={styles.image} source={{ uri: hotel.images[0] }} />
+          <View style={styles.info}>
+            <Text style={styles.name} numberOfLines={1}>
+              {hotel.name}
             </Text>
+            <View style={{ flexDirection: "row" }}>
+              <Entypo
+                name="location"
+                size={20}
+                color="red"
+                style={{ marginRight: 5 }}
+              />
+              <Text style={{ width: 221 }} numberOfLines={2}>
+                {hotel.location}
+              </Text>
+            </View>
+            <NumberFormat
+              value={price}
+              thousandSeparator={true}
+              displayType={"text"}
+              renderText={(value) => (
+                <Text style={styles.price}>Giá : {value} VND</Text>
+              )}
+            />
+            <Star score={hotel.rating} style={styles.starRating} />
           </View>
-           <NumberFormat value={hotel.price} thousandSeparator={true} displayType={'text'} renderText={value=><Text style={styles.price}>Giá : {value} VND</Text>}/>
-            <Star  score={hotel.rating} style={styles.starRating} />
         </View>
-        </View>
-        </TouchableOpacity>
+      </TouchableOpacity>
     );
   }
 }
@@ -73,8 +110,7 @@ const styles = StyleSheet.create({
     height: 20,
     marginTop: 15,
     marginRight: 20,
-
-  }
+  },
 });
 
 export default HotelCard_v2;

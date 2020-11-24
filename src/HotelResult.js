@@ -34,7 +34,7 @@ function HotelResult({ navigation, route }) {
   const [hotelCount, setHotelCount] = useState(10);
   const search = () => {
     axios
-      .post("https://1c058dc3e235.ngrok.io/filter", filter)
+      .post("https://5c11a2ba391d.ngrok.io/filter", filter)
       .then((res) => {
         setResult(res.data);
         setLoading(false);
@@ -60,19 +60,19 @@ function HotelResult({ navigation, route }) {
         <View style={{ alignItems: "center" }}>
           <Text style={styles.slogan}> hotelResult</Text>
         </View>
-        <FlatList
+        {/* <FlatList
           data={result}
           renderItem={HotelCardFlatlist}
           keyExtractor={(item) => item.name}
           onEndReached={search}
           onEndReachedThreshold={1}
           ListFooterComponent={<ActivityIndicator color="red" animating={loading} />}
-        />
-        <FlatList>
+        /> */}
+        <ScrollView>
           {result.map((hotel, index) => {
             return <HotelCard_v2 hotel={hotel} key={index} />;
           })}
-        </FlatList>
+        </ScrollView>
         <TouchableOpacity
           style={styles.map}
           onPress={() =>

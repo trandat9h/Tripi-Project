@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -16,19 +16,70 @@ import { AppLoading } from "expo";
 import Amenities from "./Amenities";
 import NumberFormat from "react-number-format";
 import axios from "axios";
+import FeedbackOverview from './FeedbackOverview';
+import {Buffer} from 'buffer';
+import ViewMoreText from 'react-native-view-more-text';
 
 const marginTop = Constants.statusBarHeight;
 const windowWidth = Dimensions.get("window").width;
 
 const HotelDetail = ({ route, navigation }) => {
   const { hotel } = route.params;
-  //console.log(hotel.hotel_id);
+  const [price, setPrice] = useState(0);
+  const [readMore, setReadMore] = useState(true);
+  const token = Buffer.from(`O_VN:pf6zLZs5bOMnpQ8aMk4x`, "utf8").toString(
+    "base64"
+  );
+  const callPrice = () => {
+    axios
+      .post(
+        "https://tripgle.data.tripi.vn/get_price",
+        { hotel_ids: `${hotel.domain_id}_${hotel.domain_hotel_id}_20201124` },
+        {
+          headers: {
+            Authorization: `Basic ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        setPrice(res.data[0][0].final_amount);
+      })
+      .catch((err) => console.log(err));
+  };
+  const [reviewData, setReviewData] = useState({});
+  const getReview = () => {
+    axios
+      .post("https://5c11a2ba391d.ngrok.io/reviews", { 'id': `${hotel.hotel_id}` })
+      .then((res) => {
+        //console.log(res.data);
+        setReviewData(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err+'review');
+      });
+  };
+
   useEffect(() => {
-    axios.post("https://1c058dc3e235.ngrok.io/updateModal", {
-      Id: hotel.hotel_id,
-    }).then(res => console.log(res.data))
-    .catch(err => console.log(err))
-  },[]);
+    callPrice();
+    getReview();
+  }, []);
+  // useEffect(() => {
+  //   axios.post("https://bca6604c7a39.ngrok.io/updateModal", {
+  //     Id: hotel.hotel_id
+  //   }).then(res => {console.log('done')})
+  //   .catch(err => console.log(err+'detail'))
+  // },[]);
+  function  renderViewMore(onPress){
+    return(
+      <Text onPress={onPress}>View more</Text>
+    )
+  }
+  function renderViewLess(onPress) {
+    return(
+      <Text onPress={onPress}>View less</Text>
+    )
+  }
   const relevantHotels = [hotel, hotel, hotel];
   let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic });
   if (!fontsLoaded) {
@@ -114,19 +165,40 @@ const HotelDetail = ({ route, navigation }) => {
           <Amenities amenities={hotel.amenities} />
           <View
             style={{
-              marginVertical: 7,
+              marginVertical: 13,
+              height: 2,
+              width: windowWidth,
+              backgroundColor: "grey",
+            }}
+          />
+          <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+          <Text style={styles.topic}> Đánh giá người dùng</Text>
+          <TouchableOpacity onPress={()=>{navigation.navigate('Reviews', {reviews: reviewData})}}>
+          <Text style={{fontWeight:"bold",color:"green", marginTop: 10, fontSize: 16,marginRight: 20,}}> Xem thêm</Text></TouchableOpacity>
+          </View>
+          <FeedbackOverview id={hotel.hotel_id} />
+          <View
+            style={{
+              marginVertical: 10,
               height: 2,
               width: windowWidth,
               backgroundColor: "grey",
             }}
           />
           <Text style={styles.topic}> Miêu tả</Text>
-          <Text style={styles.description} numberOfLines={4}>
+          <ViewMoreText
+          numberOfLines={4}
+          renderViewMore={renderViewMore}
+          renderViewLess={renderViewLess}
+          textStyle={styles.description}
+        >
+          <Text >
             {hotel.description}
           </Text>
+        </ViewMoreText>
           <View
             style={{
-              marginVertical: 13,
+              marginVertical: 10,
               height: 2,
               width: windowWidth,
               backgroundColor: "grey",
@@ -144,14 +216,14 @@ const HotelDetail = ({ route, navigation }) => {
           }}
         >
           <NumberFormat
-            value={hotel.price}
+            value={Math.round(price)}
             thousandSeparator={true}
             displayType={"text"}
             renderText={(value) => (
               <Text
                 style={{ fontWeight: "bold", fontSize: 20, color: "white" }}
               >
-                {value} VND / Ngày{" "}
+                {value} VND / Ngày
               </Text>
             )}
           />
@@ -225,6 +297,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 5,
+    marginTop: 10,
   },
   continueButton: {
     position: "absolute",
@@ -236,6 +309,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#FC3B3B",
     borderRadius: 30,
+    shadowColor: "#000",
+shadowOffset: {
+	width: 0,
+	height: 4,
+},
+shadowOpacity: 0.30,
+shadowRadius: 4.65,
+
+elevation: 8,
   },
   feedbackText: {
     marginRight: 5,
