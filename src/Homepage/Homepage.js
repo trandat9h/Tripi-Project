@@ -42,8 +42,8 @@ const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const [predictedHotel, setPredictedHotel] = useState([]);
   const getHotel = () => {
-    const homepageURL = "https://5c11a2ba391d.ngrok.io/homepage";
-    const predictURL = "https://5c11a2ba391d.ngrok.io/predict";
+    const homepageURL = "https://c1d4cf9da734.ngrok.io/homepage";
+    const predictURL = "https://c1d4cf9da734.ngrok.io/predict";
     const requestOne = axios.get(homepageURL);
     const requestTwo = axios.get(predictURL);
     axios.all([requestOne, requestTwo]).then(axios.spread((...response) =>{
@@ -114,7 +114,7 @@ const HomeScreen = () => {
         </View>
         <View>
          <Text style={styles.topic}>Đề xuất riêng cho bạn</Text>
-          <Text style={styles.subTopic}> 1 câu làm câu trên ngầu hơn</Text>
+          <Text style={styles.subTopic}> Có thể bạn sẽ thích</Text>
           <TopRating hotels={predictedHotel} />
           <Text style={styles.topic}>Khách sạn hàng đầu Việt Nam</Text>
           <Text style={styles.subTopic}> Top khách sạn hàng đầu Việt Nam</Text>

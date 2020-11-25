@@ -24,7 +24,7 @@ const cities = [
 
 ];
 function HotelByCities() {
-  const URL = 'https://5c11a2ba391d.ngrok.io/cityFilter';
+  const URL = 'https://c1d4cf9da734.ngrok.io/cityFilter';
   const [loading, setLoading] = useState(true);
   const [hotels, setHotel] = useState([]);
   const navigation = useNavigation();

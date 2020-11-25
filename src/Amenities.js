@@ -6,7 +6,7 @@ const amenityImages = [
     image: require("../assets/Bar.png"),
   },
   {
-    name: "Currency exchange",
+    name: "Dịch vụ đổi tiền",
     image: require("../assets/currency-exchange.png"),
   },
   {
@@ -60,7 +60,7 @@ function Amenities({ amenities }) {
           return (
             <View style={styles.wrapper} key={index}>
               <Image source={amenityImages[index].image} resizeMode='contain' style={styles.image} />
-              <Text> {amenityImages[index].name}</Text>
+              <Text style={styles.text}> {amenityImages[index].name}</Text>
             </View>
           );
         })}
@@ -71,19 +71,25 @@ function Amenities({ amenities }) {
 
 const styles = StyleSheet.create({
   container: {
-
-    height: 100,
+    //backgroundColor:"red",
+    height: 70,
+    marginTop: 10,
   },
   image: {
-      width: 30,
-      height: 30,
+      width: 25,
+      height: 25,
   },
   wrapper: {
       flexDirection:'column',
-      height: 100,
-      justifyContent:"center",
+      //backgroundColor:"green",
+      height: 70,
       marginLeft: 20,
       alignItems:"center",
+  },
+  text: {
+    marginTop: 5,
+    fontSize: 12,
+    color:"#5e5b5b"
   }
 });
 

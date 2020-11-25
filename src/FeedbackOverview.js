@@ -6,6 +6,7 @@ import axios from "axios";
 import {
     Roboto_400Regular_Italic,
     useFonts,
+    Roboto_500Medium_Italic
   } from "@expo-google-fonts/roboto";
   import { AppLoading } from "expo";
 
@@ -16,7 +17,7 @@ function FeedbackOverview({ id }) {
 
   const getReview = () => {
     axios
-      .post("https://5c11a2ba391d.ngrok.io/reviews", { 'id': `${id}` })
+      .post("https://c1d4cf9da734.ngrok.io/reviews", { 'id': `${id}` })
       .then((res) => {
         //console.log(res.data);
         setReviewData(res.data);
@@ -30,7 +31,7 @@ function FeedbackOverview({ id }) {
     getReview();
   }, []);
 
-  let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic });
+  let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic, Roboto_500Medium_Italic });
   if (!fontsLoaded || loading) {
     return <AppLoading />;
   } else {
@@ -41,30 +42,30 @@ function FeedbackOverview({ id }) {
           <Text style={styles.reviewNo}> {reviewData[0].number} đánh giá</Text>
         </View>
         <View style={{ marginTop: 20, marginLeft: 20 }}>
-          <Text style={{ marginVertical: 3, fontSize: 14 }}>Tuyệt vời</Text>
+          <Text style={{ marginVertical: 3, fontSize: 14, fontFamily:'Roboto_500Medium_Italic' }}>Tuyệt vời</Text>
           <Bar
-            color='green'
+            color='#2ab00c'
             progress={0.6}
             height={10}
-            borderColor="green"
+            borderColor="#5AA469"
             width={200}
             borderRadius={5}
           />
-          <Text style={{ marginVertical: 3, fontSize: 14 }}> Tốt</Text>
+          <Text style={{ marginVertical: 3, fontSize: 14, fontFamily:'Roboto_500Medium_Italic' }}> Tốt</Text>
           <Bar
-            color='yellow'
+            color='#FCA652'
             progress={0.3}
             height={10}
-            borderColor="green"
+            borderColor="#5AA469"
             width={200}
             borderRadius={5}
           />
-          <Text style={{ marginVertical: 3, fontSize: 14 }}>Chấp nhận được</Text>
+          <Text style={{ marginVertical: 3, fontSize: 14, fontFamily:'Roboto_500Medium_Italic' }}>Chấp nhận được</Text>
           <Bar
-            color='red'
+            color='#FF414D'
             progress={0.1}
             height={10}
-            borderColor="green"
+            borderColor="#5AA469"
             width={200}
             borderRadius={5}
           />
@@ -92,10 +93,12 @@ const styles = StyleSheet.create({
     top: 30,
     fontSize: 23,
     fontWeight: "bold",
+    left: 20,
   },
   reviewNo: {
     position: "absolute",
     top: 70,
+    left: 15,
   },
 });
 

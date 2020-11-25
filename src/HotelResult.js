@@ -34,7 +34,7 @@ function HotelResult({ navigation, route }) {
   const [hotelCount, setHotelCount] = useState(10);
   const search = () => {
     axios
-      .post("https://5c11a2ba391d.ngrok.io/filter", filter)
+      .post("https://c1d4cf9da734.ngrok.io/filter", filter)
       .then((res) => {
         setResult(res.data);
         setLoading(false);

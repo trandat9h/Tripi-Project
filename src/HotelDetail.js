@@ -11,7 +11,7 @@ import {
 import Constants from "expo-constants";
 import { Entypo, AntDesign } from "@expo/vector-icons";
 import HotelCard_v2 from "./HotelCard_v2";
-import { Roboto_400Regular_Italic, useFonts } from "@expo-google-fonts/roboto";
+import { Roboto_400Regular_Italic, useFonts, Roboto_500Medium_Italic } from "@expo-google-fonts/roboto";
 import { AppLoading } from "expo";
 import Amenities from "./Amenities";
 import NumberFormat from "react-number-format";
@@ -49,7 +49,7 @@ const HotelDetail = ({ route, navigation }) => {
   const [reviewData, setReviewData] = useState({});
   const getReview = () => {
     axios
-      .post("https://5c11a2ba391d.ngrok.io/reviews", { 'id': `${hotel.hotel_id}` })
+      .post("https://c1d4cf9da734.ngrok.io/reviews", { 'id': `${hotel.hotel_id}` })
       .then((res) => {
         //console.log(res.data);
         setReviewData(res.data);
@@ -59,10 +59,24 @@ const HotelDetail = ({ route, navigation }) => {
         console.log(err+'review');
       });
   };
+  // const [simHotel, setSimHotel] = useState([]);
+  // const getRelevantHotel = () => {
+  //   axios
+  //     .post("https://c1d4cf9da734.ngrok.io/similar", { 'id': `${hotel.hotel_id}` })
+  //     .then((res) => {
+  //       //console.log(res.data);
+  //       setSimHotel(res.data);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err+'similar');
+  //     });
+  // };
 
   useEffect(() => {
     callPrice();
     getReview();
+    //getRelevantHotel();
   }, []);
   // useEffect(() => {
   //   axios.post("https://bca6604c7a39.ngrok.io/updateModal", {
@@ -72,16 +86,16 @@ const HotelDetail = ({ route, navigation }) => {
   // },[]);
   function  renderViewMore(onPress){
     return(
-      <Text onPress={onPress}>View more</Text>
+      <Text onPress={onPress} style={{marginLeft: 20,color:"green"}}>Xem thêm</Text>
     )
   }
   function renderViewLess(onPress) {
     return(
-      <Text onPress={onPress}>View less</Text>
+      <Text onPress={onPress} style={{marginLeft: 20,color:"green"}}>Ẩn bớt</Text>
     )
   }
   const relevantHotels = [hotel, hotel, hotel];
-  let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic });
+  let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic, Roboto_500Medium_Italic  });
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
@@ -142,8 +156,8 @@ const HotelDetail = ({ route, navigation }) => {
                 {hotel.name}
               </Text>
           <View style={{ flexDirection: "row", marginLeft: 20, marginTop: 10, }}>
-            <Entypo name="location" size={16} color="red" />
-            <Text style={{ marginLeft: 4, fontSize: 13, width: windowWidth - 55, lineHeight: 25, }}>
+            <Entypo name="location" size={16} color="red" style={{marginTop: 6,}} />
+            <Text style={{ marginLeft: 4, fontSize: 14, width: windowWidth - 55, lineHeight: 25, }}>
               {hotel.location}
             </Text>
           </View>
@@ -166,23 +180,25 @@ const HotelDetail = ({ route, navigation }) => {
           <View
             style={{
               marginVertical: 13,
-              height: 2,
-              width: windowWidth,
-              backgroundColor: "grey",
+              height: 1.5,
+              width: windowWidth-40,
+              backgroundColor: "#bab5b5",
+              marginLeft: 20,
             }}
           />
           <View style={{flexDirection:"row", justifyContent:"space-between"}}>
           <Text style={styles.topic}> Đánh giá người dùng</Text>
           <TouchableOpacity onPress={()=>{navigation.navigate('Reviews', {reviews: reviewData})}}>
-          <Text style={{fontWeight:"bold",color:"green", marginTop: 10, fontSize: 16,marginRight: 20,}}> Xem thêm</Text></TouchableOpacity>
+          <Text style={{fontWeight:"bold",color:"green", marginTop: 10, fontSize: 15,marginRight: 20,}}> Xem thêm</Text></TouchableOpacity>
           </View>
           <FeedbackOverview id={hotel.hotel_id} />
           <View
             style={{
-              marginVertical: 10,
-              height: 2,
-              width: windowWidth,
-              backgroundColor: "grey",
+              marginVertical: 13,
+              height: 1.5,
+              width: windowWidth-40,
+              backgroundColor: "#bab5b5",
+              marginLeft: 20,
             }}
           />
           <Text style={styles.topic}> Miêu tả</Text>
@@ -196,12 +212,13 @@ const HotelDetail = ({ route, navigation }) => {
             {hotel.description}
           </Text>
         </ViewMoreText>
-          <View
+        <View
             style={{
-              marginVertical: 10,
-              height: 2,
-              width: windowWidth,
-              backgroundColor: "grey",
+              marginVertical: 13,
+              height: 1.5,
+              width: windowWidth-40,
+              backgroundColor: "#bab5b5",
+              marginLeft: 20,
             }}
           />
           <Text style={styles.topic}>Có thể bạn cũng muốn xem</Text>

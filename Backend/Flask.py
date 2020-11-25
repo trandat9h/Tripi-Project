@@ -20,6 +20,8 @@ hotel_column = hotel_db.get_collection('hotel_column')
 hotel_user_info = MongoClient.get_database('hotel_user_info')
 hotel_search_history = hotel_user_info.get_collection('hotel_search_history')
 hotel_reviews = hotel_db.get_collection('hotel_reviews')
+similar_hotel = MongoClient.get_database('similar_hotel')
+top_5 = similar_hotel.get_collection('top_5')
 
 
 @app.route('/homepage', methods=['GET'])
@@ -139,6 +141,44 @@ def getReviews():
         for review in hotel_reviews.find({'hotel_id': 29529}):
             reviews.append({'detail':review['review'],'score':review['score'], 'number':review['num_reviews'], 'score_mean': review['score_mean'],'user':review['username'],'emotion':review['Is_Response']  })
     return json.dumps(reviews)
+
+@app.route('/similar', methods=['POST'])
+def getSim():
+    requestData = request.json
+    hotel_result = []
+    simHotel_id = []
+    if top_5.find({}):
+        for hotel in top_5.find({'hotel_id':requestData['id']}):
+            simHotel_id = [hotel['0'], hotel['1'], hotel['2']]
+    for hotelId in simHotel_id:
+        if hotel_column.find({}):
+            for hotel in hotel_column.find({'hotel_id': hotelId}):
+                services = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                services[0] = hotel['night_club']
+                services[1] = hotel['currency_exchange']
+                services[2] = hotel['laundry_service']
+                services[3] = hotel['restaurants']
+                services[4] = hotel['luggage_storage']
+                services[5] = hotel['shops']
+                services[6] = hotel['relax_massage']
+                services[7] = hotel['relax_spa']
+                services[8] = hotel['room_service_24_hour']
+                services[9] = hotel['relax_pool']
+                services[10] = hotel['tours']
+                services[11] = hotel['baby_sitting']
+                hotel_result.append({'domain_hotel_id':hotel['domain_hotel_id'], 'domain_id':hotel['domain_id'],"name": hotel['name'], "amenities": services, "location": hotel['address'],
+                                    "rating": hotel['star_number'], "price": hotel['price_mean'], "images": [hotel['provider_url_1'], hotel['provider_url_2'], hotel['provider_url_3']], "coordinate": {"latitude": hotel['latitude'], "longitude": hotel['longitude']}, 'description': hotel['description'], 'hotel_id': hotel['hotel_id']})
+    return json.dumps(simHotel_id)
+    
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
