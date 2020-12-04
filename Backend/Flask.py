@@ -101,10 +101,10 @@ def idAdd():
 def predict():
     hotel_data = []
     hotel_result = []
-    predict_input = [45005, 43280, 29494, 45477] 
-    # if hotel_search_history.find({}):
-    #     for hotel in hotel_search_history.find({}):
-    #         predict_input.append(hotel['hotel_id'])
+    predict_input = []
+    if hotel_search_history.find({}):
+        for hotel in hotel_search_history.find({}):
+            predict_input.append(hotel['hotel_id'])
     cur_session = []
     MODEL_PATH = 'model/hotel_session.model'
     model = Word2Vec.load(MODEL_PATH)
@@ -146,29 +146,28 @@ def getReviews():
 def getSim():
     requestData = request.json
     hotel_result = []
-    simHotel_id = []
+    #simHotel_id = [45005, 43280, 29494] 
     if top_5.find({}):
-        for hotel in top_5.find({'hotel_id':requestData['id']}):
+        for hotel in top_5.find({'hotel_id': requestData['id']}):
             simHotel_id = [hotel['0'], hotel['1'], hotel['2']]
-    for hotelId in simHotel_id:
-        if hotel_column.find({}):
-            for hotel in hotel_column.find({'hotel_id': hotelId}):
-                services = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-                services[0] = hotel['night_club']
-                services[1] = hotel['currency_exchange']
-                services[2] = hotel['laundry_service']
-                services[3] = hotel['restaurants']
-                services[4] = hotel['luggage_storage']
-                services[5] = hotel['shops']
-                services[6] = hotel['relax_massage']
-                services[7] = hotel['relax_spa']
-                services[8] = hotel['room_service_24_hour']
-                services[9] = hotel['relax_pool']
-                services[10] = hotel['tours']
-                services[11] = hotel['baby_sitting']
-                hotel_result.append({'domain_hotel_id':hotel['domain_hotel_id'], 'domain_id':hotel['domain_id'],"name": hotel['name'], "amenities": services, "location": hotel['address'],
+    for hotelId in simHotel_id:  
+        for hotel in hotel_column.find({'hotel_id': hotelId}):
+            services = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            services[0] = hotel['night_club']
+            services[1] = hotel['currency_exchange']
+            services[2] = hotel['laundry_service']
+            services[3] = hotel['restaurants']
+            services[4] = hotel['luggage_storage']
+            services[5] = hotel['shops']
+            services[6] = hotel['relax_massage']
+            services[7] = hotel['relax_spa']
+            services[8] = hotel['room_service_24_hour']
+            services[9] = hotel['relax_pool']
+            services[10] = hotel['tours']
+            services[11] = hotel['baby_sitting']
+            hotel_result.append({'domain_hotel_id':hotel['domain_hotel_id'], 'domain_id':hotel['domain_id'],"name": hotel['name'], "amenities": services, "location": hotel['address'],
                                     "rating": hotel['star_number'], "price": hotel['price_mean'], "images": [hotel['provider_url_1'], hotel['provider_url_2'], hotel['provider_url_3']], "coordinate": {"latitude": hotel['latitude'], "longitude": hotel['longitude']}, 'description': hotel['description'], 'hotel_id': hotel['hotel_id']})
-    return json.dumps(simHotel_id)
+    return json.dumps(hotel_result)
     
 
 

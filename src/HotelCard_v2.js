@@ -11,7 +11,7 @@ import axios from "axios";
 import { useEffect } from "react";
 function HotelCard_v2({ hotel }) {
   const newHotel = hotel;
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState(Math.round(hotel.price));
   const token = Buffer.from(`O_VN:pf6zLZs5bOMnpQ8aMk4x`, "utf8").toString(
     "base64"
   );

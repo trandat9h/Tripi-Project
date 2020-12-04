@@ -17,7 +17,7 @@ function FeedbackOverview({ id }) {
 
   const getReview = () => {
     axios
-      .post("https://c1d4cf9da734.ngrok.io/reviews", { 'id': `${id}` })
+      .post("https://9c3caf23bf5f.ngrok.io/reviews", { 'id': `${id}` })
       .then((res) => {
         //console.log(res.data);
         setReviewData(res.data);

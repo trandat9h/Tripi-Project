@@ -49,34 +49,33 @@ const HotelDetail = ({ route, navigation }) => {
   const [reviewData, setReviewData] = useState({});
   const getReview = () => {
     axios
-      .post("https://c1d4cf9da734.ngrok.io/reviews", { 'id': `${hotel.hotel_id}` })
+      .post("https://9c3caf23bf5f.ngrok.io/reviews", { 'id': `${hotel.hotel_id}` })
       .then((res) => {
         //console.log(res.data);
         setReviewData(res.data);
-        setLoading(false);
+        //setLoading(false);
       })
       .catch((err) => {
         console.log(err+'review');
       });
   };
-  // const [simHotel, setSimHotel] = useState([]);
-  // const getRelevantHotel = () => {
-  //   axios
-  //     .post("https://c1d4cf9da734.ngrok.io/similar", { 'id': `${hotel.hotel_id}` })
-  //     .then((res) => {
-  //       //console.log(res.data);
-  //       setSimHotel(res.data);
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err+'similar');
-  //     });
-  // };
+  const [simHotel, setSimHotel] = useState([]);
+  const getRelevantHotel = () => {
+    axios
+      .post("https://9c3caf23bf5f.ngrok.io/similar", { 'id': hotel.hotel_id })
+      .then((res) => {
+        setSimHotel(res.data);
+        //setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err+'similar');
+      });
+  };
 
   useEffect(() => {
     callPrice();
     getReview();
-    //getRelevantHotel();
+    getRelevantHotel();
   }, []);
   // useEffect(() => {
   //   axios.post("https://bca6604c7a39.ngrok.io/updateModal", {
@@ -94,7 +93,8 @@ const HotelDetail = ({ route, navigation }) => {
       <Text onPress={onPress} style={{marginLeft: 20,color:"green"}}>Ẩn bớt</Text>
     )
   }
-  const relevantHotels = [hotel, hotel, hotel];
+  const relevantHotels = simHotel;
+  //const relevantHotels = [hotel, hotel, hotel];
   let [fontsLoaded] = useFonts({ Roboto_400Regular_Italic, Roboto_500Medium_Italic  });
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -225,6 +225,16 @@ const HotelDetail = ({ route, navigation }) => {
           {relevantHotels.map((hotel, index) => {
             return <HotelCard_v2 hotel={hotel} key={index} />;
           })}
+          <View
+            style={{
+              marginVertical: 13,
+              height: 1.5,
+              width: windowWidth-40,
+              backgroundColor: "#bab5b5",
+              marginLeft: 20,
+              marginBottom: 80,
+            }}
+          />
         </ScrollView>
         <TouchableOpacity
           style={styles.continueButton}

@@ -21,7 +21,7 @@ import {
   Roboto_100Thin,
 } from "@expo-google-fonts/roboto";
 import HotelCard_v2 from "./HotelCard_v2";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, AntDesign } from "@expo/vector-icons";
 import NumberFormat from "react-number-format";
 import Star from "react-native-star-view";
 
@@ -34,7 +34,7 @@ function HotelResult({ navigation, route }) {
   const [hotelCount, setHotelCount] = useState(10);
   const search = () => {
     axios
-      .post("https://c1d4cf9da734.ngrok.io/filter", filter)
+      .post("https://9c3caf23bf5f.ngrok.io/filter", filter)
       .then((res) => {
         setResult(res.data);
         setLoading(false);
@@ -57,8 +57,24 @@ function HotelResult({ navigation, route }) {
   } else {
     return (
       <View style={styles.container}>
+        <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              position: "absolute",
+              top: 20,
+              left: 20,
+              backgroundColor: "#f9f9f9",
+              height: 36,
+              width: 36,
+              borderRadius: 18,
+            }}
+          >
+            <AntDesign name="arrowleft" size={26} color="black" />
+          </TouchableOpacity>
         <View style={{ alignItems: "center" }}>
-          <Text style={styles.slogan}> hotelResult</Text>
+          <Text style={styles.slogan}> Kết quả tìm kiếm </Text>
         </View>
         {/* <FlatList
           data={result}

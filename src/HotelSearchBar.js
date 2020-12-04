@@ -95,23 +95,28 @@ function HotelSearchBar() {
         <Text style={styles.slogan}>Bộ lọc</Text>
         <Text style={styles.topic}>Thành phố</Text>
         <Autocomplete
-        //style={{backgroundColor:"red", padding: 10,borderRadius: 16,}}
-        //inputContainerStyle={{backgroundColor:"blue", padding: 13,}}
+          style={{borderColor:"green",borderWidth: 1.5, padding: 10,borderRadius: 10,width: 350,marginLeft: -1, marginBottom: -1}}
+          inputContainerStyle={{borderRadius: 10,width: 350,marginLeft: 30,borderColor:"#EFEFEF"}}
           containerStyle={styles.autoCompleteInput}
+          listContainerStyle={{width: 350,marginLeft: 30,marginTop: 5,borderRadius: 10,backgroundColor:"white"}}
           autoCapitalize="none"
           autoCorrect={false}
           data={filteredCity}
           defaultValue={selectedCity}
           onChangeText={(text) => findCity(text)}
-          placeholder="enter your city"
+          placeholder="Thành phố bạn muốn du lịch"
           renderItem={({ item, index }) => (
             <TouchableOpacity
               onPress={() => {
                 setSelectedCity(item);
                 setFilteredCity([]);
               }}
+              style={{height:40, paddingTop: 10,}}
             >
-              <Text style={{ fontSize: 16 }}>{item}</Text>
+              <Text style={{ fontSize: 16 }}>  {item}</Text>
+              {/* <View style={{height: 1, backgroundColor:"grey", marginTop: 5,}}>
+
+              </View> */}
             </TouchableOpacity>
           )}
           keyExtractor={(_, index) => index.toString()}
@@ -222,7 +227,7 @@ const styles = StyleSheet.create({
     top: 110,
     right: 0,
     zIndex: 1,
-    borderRadius: 20,
+    borderRadius: 30,
   },
   tagItem:{
     marginLeft: 20,

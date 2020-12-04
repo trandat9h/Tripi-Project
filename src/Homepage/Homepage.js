@@ -42,8 +42,8 @@ const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const [predictedHotel, setPredictedHotel] = useState([]);
   const getHotel = () => {
-    const homepageURL = "https://c1d4cf9da734.ngrok.io/homepage";
-    const predictURL = "https://c1d4cf9da734.ngrok.io/predict";
+    const homepageURL = "https://9c3caf23bf5f.ngrok.io/homepage";
+    const predictURL = "https://9c3caf23bf5f.ngrok.io/predict";
     const requestOne = axios.get(homepageURL);
     const requestTwo = axios.get(predictURL);
     axios.all([requestOne, requestTwo]).then(axios.spread((...response) =>{
